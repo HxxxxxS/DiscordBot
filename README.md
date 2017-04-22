@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/HxxxxxS/DiscordLastfmBot.png?label=ready&title=Ready)](https://waffle.io/HxxxxxS/DiscordLastfmBot)
-# Discord Spotify Bot
+# Discord Last.fm Bot
 Updates the game you are playing to the current song playing on your Last.fm Account.
 
 ## How to install
@@ -18,7 +18,7 @@ Type `npm install` and enter to install the required dependencies.
 Then just type `node bot.js` and press enter in the console. -->
 <!-- 
 ### Known Issues
-Bot crashing when user is on a private session on Spotify.
+Bot crashing when user is on a private session on Last.fm.
 Bot crashing when streamer mode is on within discord.
-The bot will not show you as playing the current song on Spotify on your own discord client, however other people will see it. You also need to clear all your custom set games till the point where it is saying no game detected.
+The bot will not show you as playing the current song on Last.fm on your own discord client, however other people will see it. You also need to clear all your custom set games till the point where it is saying no game detected.
  -->

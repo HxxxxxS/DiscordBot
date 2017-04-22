@@ -8,7 +8,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 var lastfm = new LastFmNode({
-  api_key: config.api_key
+	api_key: config.api_key
 });
 
 var trackStream = lastfm.stream(config.username);
