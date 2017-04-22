@@ -1,3 +1,5 @@
 {
-  "token": "User Token"
+	"token": "discord_token",
+	"username": "lastfm_username",
+	"api_key": "lastfm_apikey"
 }
