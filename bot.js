@@ -15,7 +15,9 @@ function stoppedPlaying(){
     console.log("stopped playing.");
     client.user.setGame(0);
     currentAlbum = 0;
-    client.user.setAvatar(config.defaultAvatar);
+    if(config.changeAvatar){
+        client.user.setAvatar(config.defaultAvatar);
+    }
 }
 
 var trackStream = lastfm.stream(config.username);
@@ -27,7 +29,7 @@ trackStream.on("nowPlaying", function(track) {
             newSong = track.artist["#text"] + " - " + track.name;
             if (newSong != currentSong) {
                 if (currentAlbum != track.album["#text"]){
-                    if(track.image[0]["#text"]){
+                    if(track.image[0]["#text"] && config.changeAvatar){
                         console.log("playing album: "+track.album["#text"]);
                         client.user.setAvatar(track.image[track.image.length-1]["#text"]);
                         currentAlbum = track.album["#text"];
