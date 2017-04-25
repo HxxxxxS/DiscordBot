@@ -56,4 +56,26 @@ client.on("ready", () => {
     trackStream.start();
 });
 
+// Add pre-exit script
+preExit.push(code => {
+    console.log('Whoa! Exit code %d, cleaning up...', code);
+    stoppedPlaying();
+});
+
+// Catch CTRL+C
+process.on('SIGINT', () => {
+  console.log('\nCTRL+C...');
+  stoppedPlaying();
+  process.exit(0);
+});
+
+// Catch uncaught exception
+process.on('uncaughtException', err => {
+  console.dir(err, {
+    depth: null
+  });
+  stoppedPlaying();
+  process.exit(1);
+});
+
 client.login(config.token);
