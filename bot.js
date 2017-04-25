@@ -1,5 +1,5 @@
 var config = require("./config.json");
-var currentSong, newSong;
+var currentSong, newSong, currentAlbum;
 
 const http = require("http");
 const LastFmNode = require("lastfm").LastFmNode;
@@ -11,22 +11,40 @@ var lastfm = new LastFmNode({
     api_key: config.api_key
 });
 
+function stoppedPlaying(){
+    console.log("stopped playing.");
+    client.user.setGame(0);
+    currentAlbum = 0;
+    client.user.setAvatar(config.defaultAvatar);
+}
+
 var trackStream = lastfm.stream(config.username);
 
 trackStream.on("nowPlaying", function(track) {
-    if(track){
-        newSong = track.artist["#text"] + " - " + track.name;
-        if (newSong != currentSong) {
-            console.info("currently playing:", newSong);
-            client.user.setGame(newSong);
-            currentSong = newSong;
+    if(track.name && track.artist["#text"]){
+        //console.log(track);
+        if(track["@attr"]){
+            newSong = track.artist["#text"] + " - " + track.name;
+            if (newSong != currentSong) {
+                if (currentAlbum != track.album["#text"]){
+                    if(track.image[0]["#text"]){
+                        console.log("playing album: "+track.album["#text"]);
+                        client.user.setAvatar(track.image[track.image.length-1]["#text"]);
+                        currentAlbum = track.album["#text"];
+                    }
+                }
+                console.info("currently playing:", newSong);
+                client.user.setGame("♫ "+newSong);
+                currentSong = newSong;
+            }
+        }else{
+            stoppedPlaying();
         }
     }
 });
 
 trackStream.on("stoppedPlaying", function(track) {
-    console.log("stopped playing.");
-    client.user.setGame(0);
+    stoppedPlaying();
 });
 
 trackStream.on("error", function(err) {
