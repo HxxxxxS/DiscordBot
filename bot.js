@@ -58,6 +58,10 @@ client.on("ready", () => {
     trackStream.start();
 });
 
+// Script for exiting the process is from https://frankl.in/code/before-exit-scripts-in-node-js
+
+let preExit = [];
+
 // Add pre-exit script
 preExit.push(code => {
     console.log('Whoa! Exit code %d, cleaning up...', code);
@@ -80,4 +84,5 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
+console.log('Bot on, hit CTRL+C to exit :)');
 client.login(config.token);
