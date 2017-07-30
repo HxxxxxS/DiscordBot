@@ -1,5 +1,4 @@
-var env = require('../config.json'),
-    Urban = require('urban');
+var Urban = require('urban');
 
 var UrbanModule = function () {};
     
