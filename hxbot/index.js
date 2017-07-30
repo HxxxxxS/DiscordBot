@@ -56,7 +56,7 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
 {
     var easterEggs = [
         {
-            pattern:/^a+y+$/i,
+            pattern:/^a+yy+$/i,
             response: "lmao"
         },
         {
@@ -68,7 +68,7 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
         var regex = new RegExp(easterEggs[i].pattern);
         if(regex.test(message.content))
         {
-            message.channel.send(easterEggs[i].response,{reply:false});
+            message.channel.send(easterEggs[i].response);
         }
     }
 }
