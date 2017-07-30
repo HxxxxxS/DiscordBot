@@ -21,12 +21,19 @@
         {
             "cmd": "set_lastfm",
             "desc": "Set your last.fm account. Required for now_playing command.",
-            "callback": "Lastfm"
+            "callback": "Lastfm",
+            "syntax": "set_lastfm nick"
         },
         {
             "cmd": "np",
             "desc": "Shows your currently playing track from last.fm.",
             "callback": "NowPlaying"
+        },
+        {
+            "cmd": "poll",
+            "desc": "Create a poll with emoji reactions as poll options.",
+            "callback": "Poll",
+            "syntax": "poll Is this a cool feature? :thumbsup: :thumbsdown: "
         }
     ]
 }
