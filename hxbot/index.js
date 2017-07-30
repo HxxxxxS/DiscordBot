@@ -62,7 +62,6 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
     ];
     for (var i = easterEggs.length - 1; i >= 0; i--) {
         var regex = new RegExp(easterEggs[i].pattern);
-        console.log("checking ´"+easterEggs[i].pattern+"´ on ´"+message.content+"´: "+regex.test(message.content));
         if(regex.test(message.content))
         {
             message.channel.send(easterEggs[i].response,{reply:false});
