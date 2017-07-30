@@ -14,9 +14,12 @@ RollModule.prototype.Message = function(message)
     if(sideCount>0)
     {
         var engine = Random.engines.mt19937().autoSeed();
-        var res = Random.die(sideCount)(engine)
-
-        message.reply("you rolled a "+res);
+        try {
+            var res = Random.die(sideCount)(engine);
+            message.reply("you rolled a "+res);
+        } catch(error) {
+            message.reply("error: Something went wrong. You probably picked a too high number.");
+        };
     }else{
         message.reply("error. Please provide a number >0, like ´"+config.commandPrefix+"roll 6´");
     }
