@@ -6,11 +6,11 @@ var HelpModule = function () {
 
 HelpModule.prototype.Message = function(message)
 {
-    var msg = "\n`Commands: \n";
+    var msg = "\n```Commands: \n";
     for (var i = this.commands.length - 1; i >= 0; i--) {
         msg += config.commandPrefix+this.commands[i].cmd + ": " + this.commands[i].desc + "\n";
     }
-    msg += "`";
+    msg += "```";
     message.reply(msg);
 }
 
