@@ -34,6 +34,11 @@
             "desc": "Create a poll with emoji reactions as poll options.",
             "callback": "Poll",
             "syntax": "poll Is this a cool feature? :thumbsup: :thumbsdown: "
+        },
+        {
+            "cmd": "roll",
+            "desc": "Roll a dice!",
+            "callback": "Roll"
         }
     ]
 }
