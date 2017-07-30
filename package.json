@@ -1,24 +1,30 @@
 {
-  "name": "discordlastfmbot",
+  "name": "DiscordBot",
   "version": "1.0.0",
-  "description": "A bot made with discord.js and lastfm that syncs your status to your current song playing from Last.fm",
-  "main": "bot.js",
+  "description": "A bot made with discord.js for silly discord",
+  "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HxxxxxS/DiscordLastfmBot"
+    "url": "git+https://github.com/HxxxxxS/DiscordBot"
   },
   "author": "HxxxxxS",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HxxxxxS/DiscordLastfmBot/issues"
+    "url": "https://github.com/HxxxxxS/DiscordBot/issues"
   },
-  "homepage": "https://github.com/HxxxxxS/DiscordLastfmBot#readme",
+  "homepage": "https://github.com/HxxxxxS/DiscordBot#readme",
   "dependencies": {
     "discord.js": "^11.0.0",
-    "lastfm": "0.9.2"
+    "urban": "^0.2.4",
+    "node-json-db": "^0.7.3",
+    "lastfm": "^0.9.2"
   },
+  "keywords": [
+    "hxbot"
+  ],
   "devDependencies": {}
 }

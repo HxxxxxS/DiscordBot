@@ -1,7 +1,32 @@
 {
-    "token": "discord_token",
-    "username": "lastfm_username",
-    "api_key": "lastfm_apikey",
-    "changeAvatar": true,
-    "defaultAvatar": "url to default avatar"
+    "discord": {
+            "token": "discord_token"
+    },
+    "lastfm":{
+            "apikey": "lastfm_api_key_here",
+            "apisecret": "lastfm_api_secret_here"
+    },
+    "commandPrefix": "!",
+    "commands": [
+        {
+            "cmd": "help",
+            "desc": "Displays this message.",
+            "callback": "Help"
+        },
+        {
+            "cmd": "define",
+            "desc": "Shows the Urban Dictionary definition of a word or phrase.",
+            "callback": "Urban"
+        },
+        {
+            "cmd": "set_lastfm",
+            "desc": "Set your last.fm account. Required for now_playing command.",
+            "callback": "Lastfm"
+        },
+        {
+            "cmd": "np",
+            "desc": "Shows your currently playing track from last.fm.",
+            "callback": "NowPlaying"
+        }
+    ]
 }

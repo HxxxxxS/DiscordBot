@@ -1,6 +1,9 @@
 # config.json file
 config.json
 
+#db file
+lastfm_users.json
+
 # Logs
 logs
 *.log
