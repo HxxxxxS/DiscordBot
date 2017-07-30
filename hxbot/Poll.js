@@ -14,11 +14,14 @@ PollModule.prototype.Message = function(message)
     var question = message.content.substring(pollIndex + keyword.length,questionmarkIndex+1).trim();
     var options = message.content.substring(questionmarkIndex+1).trim().split(' ');
 
-    message.channel.send(question).then(function (poll) {
-        for (var i = 0; i < options.length; i++) {
-            poll.react(options[i]);
-        }
-    });
+    if(question.length > 0 && options.length > 0)
+    {
+        message.channel.send(question).then(function (poll) {
+            for (var i = 0; i < options.length; i++) {
+                poll.react(options[i]);
+            }
+        });
+    }
 }
 
 module.exports = PollModule;
