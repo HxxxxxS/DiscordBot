@@ -12,7 +12,7 @@ PollModule.prototype.Message = function(message)
     var questionmarkIndex = message.content.lastIndexOf("?");
 
     var question = message.content.substring(pollIndex + keyword.length,questionmarkIndex+1).trim();
-    var options = message.content.substring(questionmarkIndex+1).trim().split(' ');
+    var options = message.content.substring(questionmarkIndex+1).trim().split(' ').map(s => s.replace(/[<>]/g, ''));
 
     if(question.length > 0 && options.length > 0)
     {
