@@ -2,7 +2,8 @@ var  Help = require('./Help.js'),
       Urban = require('./Urban.js'),
       Lastfm = require('./Lastfm.js'),
       NowPlaying = require('./NowPlaying.js'),
-      Poll = require('./Poll.js');
+      Poll = require('./Poll.js'),
+      Roll = require('./Roll.js');
 
 var HxBot = function() {
     this.config = require('../config.json');
@@ -11,6 +12,7 @@ var HxBot = function() {
     this.Lastfm = new Lastfm;
     this.NowPlaying = new NowPlaying; 
     this.Poll = new Poll;
+    this.Roll = new Roll;
 };
 
 HxBot.prototype.guildMemberAdd = function (member) {

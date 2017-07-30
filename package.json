@@ -21,7 +21,8 @@
     "discord.js": "^11.0.0",
     "urban": "^0.2.4",
     "node-json-db": "^0.7.3",
-    "lastfmapi": "^0.1.1"
+    "lastfmapi": "^0.1.1",
+    "random-js": "^1.0.8"
   },
   "keywords": [
     "hxbot"
