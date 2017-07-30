@@ -21,7 +21,7 @@ RollModule.prototype.Message = function(message)
             message.reply("error: Something went wrong. You probably picked a too high number.");
         };
     }else{
-        message.reply("error. Please provide a number >0, like ´"+config.commandPrefix+"roll 6´");
+        message.reply("error. Please provide a number >0, like `"+config.commandPrefix+"roll 6`");
     }
 
 }
