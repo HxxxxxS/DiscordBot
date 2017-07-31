@@ -38,7 +38,8 @@
         {
             "cmd": "roll",
             "desc": "Roll a dice!",
-            "callback": "Roll"
+            "callback": "Roll",
+            "syntax": "roll 6"
         }
     ]
 }
