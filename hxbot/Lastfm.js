@@ -1,4 +1,4 @@
-var env = require('../config.json'),
+var config = require('../config.json'),
      LastfmAPI = require('lastfmapi'),
      JsonDB = require('node-json-db');
 
@@ -7,8 +7,8 @@ var db = new JsonDB("lastfm_users", true, false);
 var LastfmModule = function () {
      
     this.lfm = new LastfmAPI({
-        'api_key' : env.lastfm.apikey,
-        'secret' : env.lastfm.apisecret
+        'api_key' : config.lastfm.apikey,
+        'secret' : config.lastfm.apisecret
     });
 };
     

@@ -2,7 +2,8 @@ var  Help = require('./Help.js'),
       Urban = require('./Urban.js'),
       Lastfm = require('./Lastfm.js'),
       NowPlaying = require('./NowPlaying.js'),
-      Poll = require('./Poll.js');
+      Poll = require('./Poll.js'),
+      Roll = require('./Roll.js');
 
 var HxBot = function() {
     this.config = require('../config.json');
@@ -11,6 +12,7 @@ var HxBot = function() {
     this.Lastfm = new Lastfm;
     this.NowPlaying = new NowPlaying; 
     this.Poll = new Poll;
+    this.Roll = new Roll;
 };
 
 HxBot.prototype.guildMemberAdd = function (member) {
@@ -54,7 +56,7 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
 {
     var easterEggs = [
         {
-            pattern:/^a+y+$/i,
+            pattern:/^a+yy+$/i,
             response: "lmao"
         },
         {
@@ -66,7 +68,7 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
         var regex = new RegExp(easterEggs[i].pattern);
         if(regex.test(message.content))
         {
-            message.channel.send(easterEggs[i].response,{reply:false});
+            message.channel.send(easterEggs[i].response);
         }
     }
 }
