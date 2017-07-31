@@ -40,6 +40,11 @@
             "desc": "Roll a dice!",
             "callback": "Roll",
             "syntax": "roll 6"
+        },
+        {
+            "cmd": "joke",
+            "desc": "Get a random dad joke.",
+            "callback": "DadJoke"
         }
     ]
 }

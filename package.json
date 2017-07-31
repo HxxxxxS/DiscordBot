@@ -22,7 +22,8 @@
     "urban": "^0.2.4",
     "node-json-db": "^0.7.3",
     "lastfmapi": "^0.1.1",
-    "random-js": "^1.0.8"
+    "random-js": "^1.0.8",
+    "request": "^2.81.0"
   },
   "keywords": [
     "hxbot"
