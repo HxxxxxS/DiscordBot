@@ -10,12 +10,12 @@ client.on('ready', () => {
     client.user.setGame(hx.config.commandPrefix+"help");
 });
 
-client.on("guildMemberAdd", function(member)
+client.on('guildMemberAdd', function(member)
 {
     hx.guildMemberAdd(member);
 });
 
-client.on("guildMemberRemove", function(member)
+client.on('guildMemberRemove', function(member)
 {
     hx.guildMemberRemove(member);
 });

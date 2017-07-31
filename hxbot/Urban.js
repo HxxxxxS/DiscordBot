@@ -1,7 +1,7 @@
 var Urban = require('urban');
 
 var UrbanModule = function () {};
-    
+
 UrbanModule.prototype.Message = function(message)
 {
     var keyword = "define";
@@ -11,12 +11,12 @@ UrbanModule.prototype.Message = function(message)
     if (urbanIndex > -1) {
         Urban(term).first(function(json) {
             if (json !== undefined) {
-                var definition = "\n**" + json.word + "**\n" +
+                var definition = `\n**${json.word}**\n` +
                     json.definition + "\n\n" +
-                    "Example: " + json.example;
+                    'Example:' + json.example;
                 message.reply(definition);
             }else{
-                message.reply("Sorry, I couldn't find a definition for: " + term);
+                message.reply(`Sorry, I couldn't find a definition for: ${term}`);
             }
         });
     }
