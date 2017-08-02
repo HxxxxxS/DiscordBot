@@ -6,7 +6,8 @@ const client = new Discord.Client();
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
-    console.log(`Serving in ${client.channels.length} channels`);
+    var l = Object.keys(client.channels).length;
+    console.log(`Serving in ${l+1} channel${(l>1?'s':'')}.`);
     client.user.setGame(hx.config.commandPrefix+'help');
     hx.DbHelper.Init();
     console.log('Ready for action!');
