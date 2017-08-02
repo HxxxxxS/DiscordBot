@@ -1,8 +1,10 @@
 # config.json file
 config.json
 
-#db file
+# DB files
 lastfm_users.json
+used_jokes.json
+# Todo: use just one DB file?
 
 # Logs
 logs
