@@ -10,6 +10,9 @@ DadJokeModule.prototype.Message = function(message)
 
     var request = require('request');
 
+    var data = db.getData('/');
+    if(!data) db.push('/jokes[0]',0);
+
     var jokes = db.getData('/jokes');
 
     (function theThing()
