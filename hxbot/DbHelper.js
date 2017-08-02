@@ -9,16 +9,25 @@ var DbHelper = function () {};
 DbHelper.prototype.Init = function()
 {
     console.log('Initiating database.');
-    var s = this;
-    ['lastfm_users','used_jokes'].forEach( function(e) {
-        s.UpdateOld(e);
-    });
-
+    // It's two items so I'm just gonna do it like this. Fight me.
+    this.UpdateOld('lastfm_users');
+    this.Populate('lastfm_users',1);
+    this.UpdateOld('used_jokes');
+    this.Populate('used_jokes',0);
     db.reload();
 }
 
-// For backwards compatibility:
+// I need to initiate the array/objects or node-json-db throws errors.
+DbHelper.prototype.Populate = function(database,type){ // type 1 for object, 0 for array
+    try {
+        var data = db.getData('/'+database);
+    } catch(e) {
+        // statements
+        db.push('/'+database,(type?{}:[]));
+    }
+};
 
+// For backwards compatibility:
 DbHelper.prototype.UpdateOld = function(database){
     try {
         var oldDb = require(`../${database}.json`);
