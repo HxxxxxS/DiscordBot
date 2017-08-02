@@ -1,49 +1,49 @@
 {
     "discord": {
-            "token": "discord_token"
+        "token":        "discord_token"
     },
     "lastfm":{
-            "apikey": "lastfm_api_key_here",
-            "apisecret": "lastfm_api_secret_here"
+        "apikey":       "lastfm_api_key_here",
+        "apisecret":    "lastfm_api_secret_here"
     },
-    "commandPrefix": "!",
+    "commandPrefix":    "!",
     "commands": [
         {
-            "cmd": "help",
-            "desc": "Displays this message.",
+            "cmd":      "help",
+            "desc":     "Displays this message.",
             "callback": "Help"
         },
         {
-            "cmd": "define",
-            "desc": "Shows the Urban Dictionary definition of a word or phrase.",
+            "cmd":      "define",
+            "desc":     "Shows the Urban Dictionary definition of a word or phrase.",
             "callback": "Urban"
         },
         {
-            "cmd": "set_lastfm",
-            "desc": "Set your last.fm account. Required for now_playing command.",
+            "cmd":      "set_lastfm",
+            "desc":     "Set your last.fm account. Required for now_playing command.",
             "callback": "Lastfm",
-            "syntax": "set_lastfm nick"
+            "syntax":   "set_lastfm nick"
         },
         {
-            "cmd": "np",
-            "desc": "Shows your currently playing track from last.fm.",
+            "cmd":      "np",
+            "desc":     "Shows your currently playing track from last.fm.",
             "callback": "NowPlaying"
         },
         {
-            "cmd": "poll",
-            "desc": "Create a poll with emoji reactions as poll options.",
+            "cmd":      "poll",
+            "desc":     "Create a poll with emoji reactions as poll options.",
             "callback": "Poll",
-            "syntax": "poll Is this a cool feature? :thumbsup: :thumbsdown: "
+            "syntax":   "poll Is this a cool feature? :thumbsup: :thumbsdown: "
         },
         {
-            "cmd": "roll",
-            "desc": "Roll a dice!",
+            "cmd":      "roll",
+            "desc":     "Roll a dice!",
             "callback": "Roll",
-            "syntax": "roll 6"
+            "syntax":   "roll 6"
         },
         {
-            "cmd": "joke",
-            "desc": "Get a random dad joke.",
+            "cmd":      "joke",
+            "desc":     "Get a random dad joke.",
             "callback": "DadJoke"
         }
     ]
