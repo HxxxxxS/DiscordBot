@@ -10,7 +10,7 @@ var LastfmModule = function () {
         'secret' : config.lastfm.apisecret
     });
 };
-    
+
 LastfmModule.prototype.Message = function(message)
 {
     var keyword = "set_lastfm";
