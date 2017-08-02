@@ -1,29 +1,29 @@
 {
-  "name": "DiscordBot",
-  "version": "1.0.0",
-  "description": "A bot made with discord.js for silly discord",
-  "main": "index.js",
+  "name":           "DiscordBot",
+  "version":        "1.0.0",
+  "description":    "A bot made with discord.js for silly discord",
+  "main":           "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+        "start":    "node index.js",
+        "test":     "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HxxxxxS/DiscordBot"
+        "type":     "git",
+        "url":      "git+https://github.com/HxxxxxS/DiscordBot"
   },
-  "author": "HxxxxxS",
-  "license": "MIT",
+  "author":         "HxxxxxS",
+  "license":        "MIT",
   "bugs": {
-    "url": "https://github.com/HxxxxxS/DiscordBot/issues"
+        "url":      "https://github.com/HxxxxxS/DiscordBot/issues"
   },
-  "homepage": "https://github.com/HxxxxxS/DiscordBot#readme",
+  "homepage":       "https://github.com/HxxxxxS/DiscordBot#readme",
   "dependencies": {
-    "discord.js": "^11.0.0",
-    "urban": "^0.2.4",
+    "discord.js":   "^11.0.0",
     "node-json-db": "^0.7.3",
-    "lastfmapi": "^0.1.1",
-    "random-js": "^1.0.8",
-    "request": "^2.81.0"
+    "urban":        "^0.2.4",
+    "lastfmapi":    "^0.1.1",
+    "random-js":    "^1.0.8",
+    "request":      "^2.81.0"
   },
   "keywords": [
     "hxbot"
