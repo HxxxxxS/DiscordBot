@@ -1,6 +1,6 @@
 var config = require('../config.json'),
-     LastfmAPI = require('lastfmapi'),
-     JsonDB = require('node-json-db');
+    LastfmAPI = require('lastfmapi'),
+    JsonDB = require('node-json-db');
 
 var db = new JsonDB('database', true, true);
 
@@ -13,14 +13,11 @@ var NowPlayingModule = function () {
 
 NowPlayingModule.prototype.Message = function(message)
 {
-    try {
-        var nick = db.getData(`/lastfm_users/${message.author.id}`);
-    } catch(error) {
-        message.reply(`you have not set your last.fm account yet.\nUse \`${config.commandPrefix}set_lastfm nick\` to set it.`);
-    };
-    if(nick)
+    db.reload();
+    var users = db.getData(`/lastfm_users`);
+    if(Object.keys(users).indexOf(message.author.id)>-1)
     {
-        this.lfm.user.getRecentTracks({user:nick}, function(err, recentTracks){
+        this.lfm.user.getRecentTracks({user:users[message.author.id]}, function(err, recentTracks){
             if(err)
             {
                 message.reply(`last.fm error: ${err.message}`);
@@ -36,7 +33,9 @@ NowPlayingModule.prototype.Message = function(message)
                 }
             }
         });
-    }
+    }else{
+        message.reply(`you have not set your last.fm account yet.\nUse \`${config.commandPrefix}set_lastfm nick\` to set it.`);
+    };
 }
 
 module.exports = NowPlayingModule;
