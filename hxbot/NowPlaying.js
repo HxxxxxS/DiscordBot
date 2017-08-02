@@ -13,7 +13,6 @@ var NowPlayingModule = function () {
 
 NowPlayingModule.prototype.Message = function(message)
 {
-    db.reload();
     try {
         var nick = db.getData(`/lastfm_users/${message.author.id}`);
     } catch(error) {
