@@ -33,7 +33,6 @@ LastfmModule.prototype.Message = function(message)
             }
         );
     }
-    db.reload();
 }
 
 module.exports = LastfmModule;
