@@ -47,9 +47,6 @@ DadJokeModule.prototype.Message = function(message)
             }
         });
     }());
-
-    db.reload();
-
 }
 
 module.exports = DadJokeModule;
