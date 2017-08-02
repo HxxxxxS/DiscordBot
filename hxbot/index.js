@@ -1,4 +1,5 @@
-var Help            = require('./Help.js'),
+var DbHelper        = require('./DbHelper.js'),
+    Help            = require('./Help.js'),
     Urban           = require('./Urban.js'),
     Lastfm          = require('./Lastfm.js'),
     NowPlaying      = require('./NowPlaying.js'),
@@ -8,6 +9,7 @@ var Help            = require('./Help.js'),
 
 var HxBot = function() {
     this.config     = require('../config.json');
+    this.DbHelper   = new DbHelper;
     this.Help       = new Help;
     this.Urban      = new Urban;
     this.Lastfm     = new Lastfm;

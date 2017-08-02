@@ -1,8 +1,8 @@
-var config = require('../config.json'),
+var  config = require('../config.json'),
      LastfmAPI = require('lastfmapi'),
      JsonDB = require('node-json-db');
 
-var db = new JsonDB('lastfm_users', true, false);
+var db = new JsonDB('database', true, true);
 
 var LastfmModule = function () {
     this.lfm = new LastfmAPI({
@@ -27,7 +27,7 @@ LastfmModule.prototype.Message = function(message)
                 if(info)
                 {
                     message.reply(`gotcha! your last.fm account is ${info.url}`);
-                    console.log(message.author.id + " is " + info.name);
+                    console.log(`${message.author.id} is last.fm user "${info.name}"`);
                     db.push(`/lastfm_users/${message.author.id}`, info.name);
                 }
             }

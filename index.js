@@ -7,7 +7,9 @@ const client = new Discord.Client();
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
     console.log(`Serving in ${client.channels.length} channels`);
-    client.user.setGame(hx.config.commandPrefix+"help");
+    client.user.setGame(hx.config.commandPrefix+'help');
+    hx.DbHelper.Init();
+    console.log('Ready for action!');
 });
 
 client.on('guildMemberAdd', function(member)

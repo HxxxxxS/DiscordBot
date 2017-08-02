@@ -2,7 +2,7 @@ var config = require('../config.json'),
      LastfmAPI = require('lastfmapi'),
      JsonDB = require('node-json-db');
 
-var db = new JsonDB('lastfm_users', true, false);
+var db = new JsonDB('database', true, true);
 
 var NowPlayingModule = function () {
     this.lfm = new LastfmAPI({

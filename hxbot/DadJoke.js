@@ -1,27 +1,22 @@
 var request = require('request'),
     JsonDB = require('node-json-db');
 
-var db = new JsonDB('used_jokes', true, false);
+var db = new JsonDB('database', true, true);
 
 var DadJokeModule = function () {};
 
 DadJokeModule.prototype.Message = function(message)
 {
 
-    var request = require('request');
-
-    var data = db.getData('/');
-    if(!data) db.push('/jokes[0]',0);
-
-    var jokes = db.getData('/jokes');
+    var jokes = db.getData('/used_jokes');
 
     (function theThing()
     {
 
         var headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'User-Agent': 'https://github.com/HxxxxxS/DiscordBot'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'https://github.com/HxxxxxS/DiscordBot'
         }
 
         var options = {
@@ -40,10 +35,10 @@ DadJokeModule.prototype.Message = function(message)
                     theThing();
                 }else{
                     message.reply(joke.joke);
-                    db.push('/jokes[]',joke.id);
+                    db.push('/used_jokes[]',joke.id);
                     if(jokes.length>50)
                     {
-                        db.delete('/jokes[0]');
+                        db.delete('/used_jokes[0]');
                     }
                 }
             }else{
