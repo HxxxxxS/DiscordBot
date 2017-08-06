@@ -22,6 +22,8 @@ Hilarious, I know..
   - Get your Last.fm api keys here: https://www.last.fm/api/account/create
 3. Use `node index.js` to run, or set up something like https://github.com/foreverjs/forever (`forever start -a index.js`)
 
-Based loosely on https://github.com/Cleanse/InsomBot
+This code is distributed under the [MIT License](LICENSE). Feel free to use, copy, modify, or redestribute the code. If you come up with a kick ass feature, feel free to submit a [PR](https://github.com/HxxxxxS/DiscordBot/pulls), or at least tell me about it! You can reach me on Discord as `hx#0012`.
 
-Forked from https://github.com/HxxxxxS/DiscordLastfmBot/ which in turn is a fork of https://github.com/wsmigielski/DiscordSpotifyBot
+*Based loosely on https://github.com/Cleanse/InsomBot*
+
+*Forked from https://github.com/HxxxxxS/DiscordLastfmBot/ which in turn is a fork of https://github.com/wsmigielski/DiscordSpotifyBot*
