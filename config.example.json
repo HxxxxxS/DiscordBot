@@ -20,7 +20,7 @@
         },
         {
             "cmd":      "set_lastfm",
-            "desc":     "Set your last.fm account. Required for now_playing command.",
+            "desc":     "Set your last.fm account. Required for np command.",
             "callback": "Lastfm",
             "syntax":   "set_lastfm nick"
         },
