@@ -17,6 +17,7 @@ HelpModule.prototype.Message = function(message)
         msg += "-------------------------------------\n";
     }
     msg += "```";
+    msg += '*The code for this bot is freely available at https://github.com/HxxxxxS/DiscordBot*';
     message.reply(msg);
 }
 
