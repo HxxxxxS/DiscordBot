@@ -1,5 +1,5 @@
 # HxBot
-A Discord bot made for the `The Nest` Discord server.
+Another Discord bot made for another Discord server.
 
 ### Features
 - Greet/Part messages when people join/leave your server
