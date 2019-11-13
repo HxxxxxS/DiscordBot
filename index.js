@@ -8,7 +8,7 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
     var l = Object.keys(client.channels).length;
     console.log(`Serving in ${l+1} channel${(l>1?'s':'')}.`);
-    client.user.setGame(hx.config.commandPrefix+'help');
+    client.user.setActivity(hx.config.commandPrefix+'help',{type: 0});
     hx.DbHelper.Init();
     console.log('Ready for action!');
 });
