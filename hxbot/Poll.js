@@ -9,15 +9,18 @@ PollModule.prototype.Message = function(message)
     }
     var keyword = 'poll';
     var pollIndex = message.content.indexOf(keyword);
-    var questionmarkIndex = message.content.indexOf(':') - 1;
+    var optionIndex = message.content.replace(/[<>\W]+/g, ' ').length
 
-    var question = `**${message.author.username} asked:**\n`;
-    question += message.content.substring(pollIndex + keyword.length,questionmarkIndex+1).trim();
-    var options = message.content.substring(questionmarkIndex+1).trim().split(' ').map(s => s.replace(/[<>]/g, ''));
+    var ret = `**${message.author.username} asked:**\n`;
+    var options = message.content.substring(optionIndex).trim().split(' ').map(s => s.replace(/[<>]/g, ''));
+
+    var question = message.content.substring(pollIndex + keyword.length, optionIndex).trim();
+
+    ret += question;
 
     if(question.length > 0 && options.length > 0)
     {
-        message.channel.send(question).then(function (poll) {
+        message.channel.send(ret).then(function (poll) {
             for (var i = 0; i < options.length; i++) {
                 poll.react(options[i]);
             }
