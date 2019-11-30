@@ -45,6 +45,11 @@
             "cmd":      "joke",
             "desc":     "Get a random dad joke.",
             "callback": "DadJoke"
+        },
+        {
+            "cmd": "onyxia",
+            "desc": "Display the next onyxia reset.",
+            "callback": "OnyxiaReset"
         }
     ]
 }

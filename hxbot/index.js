@@ -5,7 +5,8 @@ var DbHelper        = require('./DbHelper.js'),
     NowPlaying      = require('./NowPlaying.js'),
     Poll            = require('./Poll.js'),
     Roll            = require('./Roll.js'),
-    DadJoke         = require('./DadJoke.js');
+    DadJoke         = require('./DadJoke.js'),
+    OnyxiaReset     = require('./OnyxiaReset.js');
 
 var HxBot = function() {
     this.config     = require('../config.json');
@@ -13,20 +14,21 @@ var HxBot = function() {
     this.Help       = new Help;
     this.Urban      = new Urban;
     this.Lastfm     = new Lastfm;
-    this.NowPlaying = new NowPlaying; 
+    this.NowPlaying = new NowPlaying;
     this.Poll       = new Poll;
     this.Roll       = new Roll;
     this.DadJoke    = new DadJoke;
+    this.OnyxiaReset= new OnyxiaReset;
 };
 
 HxBot.prototype.guildMemberAdd = function (member) {
     let guild = member.guild;
-    guild.defaultChannel.sendMessage(`${member.user} joined ${member.guild} :ok_hand: Welcome!`).catch(console.error);
+    //guild.defaultChannel.sendMessage(`${member.user} joined ${member.guild} :ok_hand: Welcome!`).catch(console.error);
 }
 
 HxBot.prototype.guildMemberRemove = function(member) {
     let guild = member.guild;
-    guild.defaultChannel.sendMessage(`${member.user} left ${member.guild} :cry:`).catch(console.error);
+    //guild.defaultChannel.sendMessage(`${member.user} left ${member.guild} :cry:`).catch(console.error);
 };
 
 HxBot.prototype.getCommand  = function(message,callback)
