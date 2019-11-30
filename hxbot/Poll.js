@@ -9,7 +9,7 @@ PollModule.prototype.Message = function(message)
     }
     var keyword = 'poll';
     var pollIndex = message.content.indexOf(keyword);
-    var optionIndex = message.content.replace(/[<>\W]+/g, ' ').length
+    var optionIndex = message.content.replace(/[<>\W]+/g, ' ').length;
 
     var ret = `**${message.author.username} asked:**\n`;
     var options = message.content.substring(optionIndex).trim().split(' ').map(s => s.replace(/[<>]/g, ''));
