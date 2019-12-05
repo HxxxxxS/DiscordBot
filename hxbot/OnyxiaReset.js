@@ -3,8 +3,9 @@ var OnyxiaModule = function () {};
 OnyxiaModule.prototype.Message = function(message)
 {
     var resets = [
-        new Date('2019-10-26T06:00:00.000Z'),
+        new Date('2019-10-16T06:00:00.000Z'),
         new Date('2019-10-21T06:00:00.000Z'),
+        new Date('2019-10-26T06:00:00.000Z'),
         new Date('2019-10-31T06:00:00.000Z')
     ]
 
@@ -39,17 +40,10 @@ OnyxiaModule.prototype.Message = function(message)
 
     while (currentDate > resets[1])
     {
+        resets[0].setDate(resets[0].getDate() + 5);
         resets[1].setDate(resets[1].getDate() + 5);
-        resets[0].setMonth(resets[1].getMonth());
-        resets[0].setDate(resets[1].getDate() - 5);
-        resets[2].setMonth(resets[1].getMonth());
-        resets[2].setDate(resets[1].getDate() + 5);
-    }
-
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const renderResetDate = () => {
-        return `${days[resets[1].getDay()]}, ${months[resets[1].getMonth()]} ${resets[1].getDate()}, ${resets[1].getFullYear()} @ ${resets[1].getHours()}:00${resets[1].getHours() < 12 ? 'AM' : 'PM'} (Server Time)`;
+        resets[2].setDate(resets[2].getDate() + 5);
+        resets[3].setDate(resets[3].getDate() + 5);
     }
 
     const renderCountdown = () => {
@@ -68,7 +62,7 @@ OnyxiaModule.prototype.Message = function(message)
 
         if (day.getDay() == 1) cal += "\n";
 
-        var text = ([resets[0].getDate(), resets[1].getDate(), resets[2].getDate()].indexOf(day.getDate()) > -1 ? 'RE' : day.getDate());
+        var text = ([resets[0].getDate(), resets[1].getDate(), resets[2].getDate(), resets[3].getDate()].indexOf(day.getDate()) > -1 ? 'RE' : day.getDate());
         cal+= (" ".repeat(2 - text.toString().length)) + text + (day.getDay()>0 ? "     " : "\n");
     }
     cal+= '```';
