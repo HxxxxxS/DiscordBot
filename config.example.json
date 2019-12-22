@@ -47,9 +47,21 @@
             "callback": "DadJoke"
         },
         {
-            "cmd": "onyxia",
-            "desc": "Display the next onyxia reset.",
+            "cmd":      "onyxia",
+            "desc":     "Display the next Onyxia reset (WoW Classic).",
             "callback": "OnyxiaReset"
+        },
+        {
+            "cmd":      "set",
+            "desc":     "Set a custom command for this Discord server.",
+            "syntax":   "set foo bar",
+            "callback": "CustomCmd"
+        },
+        {
+            "cmd":      "remove",
+            "desc":     "Remove a custom command for this Discord server.",
+            "syntax":   "remove foo",
+            "callback": "CustomCmd"
         }
     ]
 }

@@ -8,7 +8,7 @@ HelpModule.prototype.Message = function(message)
 {
     var msg = "\n```Commands: \n";
     msg += "-------------------------------------\n";
-    for (var i = this.commands.length - 1; i >= 0; i--) {
+    for (var i = 0; i < this.commands.length; i++) {
         msg += config.commandPrefix+this.commands[i].cmd + ": " + this.commands[i].desc + "\n";
         if(this.commands[i].syntax)
         {

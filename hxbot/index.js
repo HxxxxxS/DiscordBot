@@ -1,3 +1,5 @@
+var JsonDB          = require('node-json-db');
+
 var DbHelper        = require('./DbHelper.js'),
     Help            = require('./Help.js'),
     Urban           = require('./Urban.js'),
@@ -6,7 +8,8 @@ var DbHelper        = require('./DbHelper.js'),
     Poll            = require('./Poll.js'),
     Roll            = require('./Roll.js'),
     DadJoke         = require('./DadJoke.js'),
-    OnyxiaReset     = require('./OnyxiaReset.js');
+    OnyxiaReset     = require('./OnyxiaReset.js'),
+    CustomCmd       = require('./CustomCmd.js');
 
 var HxBot = function() {
     this.config     = require('../config.json');
@@ -19,6 +22,7 @@ var HxBot = function() {
     this.Roll       = new Roll;
     this.DadJoke    = new DadJoke;
     this.OnyxiaReset= new OnyxiaReset;
+    this.CustomCmd  = new CustomCmd;
 };
 
 HxBot.prototype.guildMemberAdd = function (member) {
@@ -85,8 +89,29 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
     if(message.content == this.config.commandPrefix+'ping')
     {
         message.channel.send('pong..').then(sent => {
-            sent.edit(`Ping is *${sent.createdTimestamp - message.createdTimestamp}ms*`);
+            sent.edit(`Ping is **${sent.createdTimestamp - message.createdTimestamp}ms**`);
         });
+    } else {
+        if (message.content[0] == this.config.commandPrefix) {
+            var db = new JsonDB('database', true, true);
+            var cmd = message.content.substring(1).trim();
+            switch (message.channel.type) {
+                case 'text':
+                    var id = message.guild.id;
+                    break;
+                case 'dm':
+                case 'group':
+                    var id = message.channel.id;
+                    break;
+            }
+            try {
+                var res = db.getData(`/cmds/${id}/${cmd}`);
+                message.channel.send(res);
+            } catch(e) {
+                console.log(`/cmds/${id}/${cmd} - Invalid command..`);
+                message.reply(`Unknown command **${message.content}**`);
+            }
+        }
     }
 }
 
