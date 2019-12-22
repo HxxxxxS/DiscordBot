@@ -84,8 +84,8 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
     // Debug command to check ping
     if(message.content == this.config.commandPrefix+'ping')
     {
-        message.channel.send('Pinging...').then(sent => {
-            sent.edit(`${sent.createdTimestamp - message.createdTimestamp}ms`);
+        message.channel.send('pong..').then(sent => {
+            sent.edit(`Ping is *${sent.createdTimestamp - message.createdTimestamp}ms*`);
         });
     }
 }
