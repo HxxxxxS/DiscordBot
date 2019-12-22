@@ -66,6 +66,10 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
             response: 'lmao'
         },
         {
+            pattern: /^g+oo+n+\!*$/i,
+            response: 'SQUA'+'A'.repeat(message.content.length-4)+'D'
+        },
+        {
             pattern: /i+['´`]?m+ g+a+y+/i,
             response: `${message.author.username} has officially come out of the closet! Rejoice!`
         }
