@@ -27,7 +27,7 @@ NowPlayingModule.prototype.Message = function(message)
                 var track = recentTracks.track[0];
                 if(track['@attr'])
                 {
-                    message.channel.send(`${message.author} is currently listening to ♫ ${track.artist["#text"]} - ${track.name}`);
+                    message.channel.send(`${message.author} is currently listening to ♫ ${track.artist["#text"]} - ${track.name} ♫`);
                 }else{
                     message.channel.send(`${message.author} last listened to ♫ ${track.artist["#text"]} - ${track.name} ♫`);
                 }
