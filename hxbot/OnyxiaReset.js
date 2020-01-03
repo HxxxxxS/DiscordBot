@@ -3,10 +3,10 @@ var OnyxiaModule = function () {};
 OnyxiaModule.prototype.Message = function(message)
 {
     var resets = [
-        new Date('2019-10-16T06:00:00.000Z'),
-        new Date('2019-10-21T06:00:00.000Z'),
-        new Date('2019-10-26T06:00:00.000Z'),
-        new Date('2019-10-31T06:00:00.000Z')
+        new Date('2020-01-04T06:00:00.000Z'),
+        new Date('2020-01-09T06:00:00.000Z'),
+        new Date('2020-01-14T06:00:00.000Z'),
+        new Date('2020-01-19T06:00:00.000Z')
     ]
 
     const convertMilliseconds = (miliseconds, format) =>
