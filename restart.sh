@@ -13,7 +13,7 @@ echo "CRON: Killed old forever process... Starting a new one."
 
 sleep 1
 
-forever --uid discordbot start -a index.js
+forever --uid discordbot start -a index.js -w
 
 echo "CRON: Bot is running. We are finished"
 echo ""
