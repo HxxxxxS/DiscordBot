@@ -2,12 +2,7 @@ var OnyxiaModule = function () {};
 
 OnyxiaModule.prototype.Message = function(message)
 {
-    var resets = [
-        new Date('2020-01-04T06:00:00.000Z'),
-        new Date('2020-01-09T06:00:00.000Z'),
-        new Date('2020-01-14T06:00:00.000Z'),
-        new Date('2020-01-19T06:00:00.000Z')
-    ]
+    var reset = new Date('2019-12-30T06:00:00.000Z');
 
     const convertMilliseconds = (miliseconds, format) =>
     {
@@ -38,36 +33,35 @@ OnyxiaModule.prototype.Message = function(message)
 
     let currentDate = new Date();
 
-    while (currentDate > resets[1])
+    while (currentDate > reset)
     {
-        resets[0].setDate(resets[0].getDate() + 5);
-        resets[1].setDate(resets[1].getDate() + 5);
-        resets[2].setDate(resets[2].getDate() + 5);
-        resets[3].setDate(resets[3].getDate() + 5);
+        reset.setDate(reset.getDate() + 5);
     }
 
     const renderCountdown = () => {
-        const seconds = convertMilliseconds(resets[1] - currentDate, 's');
-        const minutes = convertMilliseconds(resets[1] - currentDate, 'm');
-        const hours = convertMilliseconds(resets[1] - currentDate, 'h');
-        const days = convertMilliseconds(resets[1] - currentDate, 'd');
+        const seconds = convertMilliseconds(reset - currentDate, 's');
+        const minutes = convertMilliseconds(reset - currentDate, 'm');
+        const hours = convertMilliseconds(reset - currentDate, 'h');
+        const days = convertMilliseconds(reset - currentDate, 'd');
         return `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    var cal = "```Mon    Tue    Wed    Thu    Fri    Sat    Sun\n"
-    for (var i = 0 - resets[0].getDay(); i < 21 - resets[0].getDay(); i++) {
-        var day = new Date();
-        day.setMonth(resets[0].getMonth())
-        day.setDate(resets[0].getDate() + i + 1);
+    const renderCalendar = () => {
+        var cal = "Mon    Tue    Wed    Thu    Fri    Sat    Sun\n"
+        for (var i = 0 - reset.getDay(); i < 21 - reset.getDay(); i++) {
+            var day = new Date();
+            day.setMonth(reset.getMonth())
+            day.setDate(reset.getDate() + i + 1);
 
-        if (day.getDay() == 1) cal += "\n";
+            if (day.getDay() == 1) cal += "\n";
 
-        var text = ([resets[0].getDate(), resets[1].getDate(), resets[2].getDate(), resets[3].getDate()].indexOf(day.getDate()) > -1 ? 'RE' : day.getDate());
-        cal+= (" ".repeat(2 - text.toString().length)) + text + (day.getDay()>0 ? "     " : "\n");
+            var text = ([reset.getDate(), reset.getDate() + 5, reset.getDate() + 10, reset.getDate() + 15].indexOf(day.getDate()) > -1 ? 'RE' : day.getDate());
+            cal+= (" ".repeat(2 - text.toString().length)) + text + (day.getDay()>0 ? "     " : "\n");
+        }
+        return cal;
     }
-    cal+= '```';
 
-    message.channel.send(`Next Onyxia reset is in **${renderCountdown()}**\nUpcoming resets and kill windows:\n${cal}*(Every reset is at 08:00 AM server time)*\nMolten Core always resets on Wednesday morning.`)
+    message.channel.send(`Next Onyxia reset is in **${renderCountdown()}**\nUpcoming resets and kill windows:\n\`\`\`${renderCalendar()}\`\`\`*(Every reset is at 06:00 AM server time)*\nMolten Core always resets on Wednesday morning.`)
 }
 
 module.exports = OnyxiaModule;
