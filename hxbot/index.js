@@ -109,7 +109,6 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
                 message.channel.send(res);
             } catch(e) {
                 console.log(`/cmds/${id}/${cmd} - Invalid command..`);
-                message.reply(`Unknown command **${message.content}**`);
             }
         }
     }
