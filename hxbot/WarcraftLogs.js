@@ -37,13 +37,17 @@ WarcraftLogs.prototype.Message = function(message)
                 guildName += " " + msgArr[i];
             }
             guildId = guildName + '/' + zone;
-            getLatestLog(guildId, true);
-            //db.push(`/warcraftlogs/guilds/${id}`, result);
+            try {
+                getLatestLog(guildId);
+                db.push('/warcraftlogs/guilds/' + id, guildId);
+            } catch (error) {
+                message.reply(`Something went wrong. See the **${config.commandPrefix}help** command on how to do it right.`)
+            }
             break;
         default:
             try {
                 var guild = db.getData('/warcraftlogs/guilds/' + id);
-                message.channel.send(getLatestLog(guild));
+                getLatestLog(guild);
                 message.delete();
             } catch (error) {
                 message.reply(`There is no WarcraftLogs Guild related to this discord server. See the **${config.commandPrefix}help** command on how to set it.`);
@@ -52,7 +56,7 @@ WarcraftLogs.prototype.Message = function(message)
 
     }
 
-    function getLatestLog(guildId, test = false)
+    function getLatestLog(guildId)
     {
 
         var zone = guildId.split('|')[1];
@@ -101,31 +105,16 @@ WarcraftLogs.prototype.Message = function(message)
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var data = JSON.parse(body);
-                if (!test) {
-                    var latest = data[0];
-                    var seconds = convertMilliseconds(latest.end - latest.start, 's');
-                    var minutes = convertMilliseconds(latest.end - latest.start, 'm');
-                    var hours = convertMilliseconds(latest.end - latest.start, 'h');
-                    var days = convertMilliseconds(latest.end - latest.start, 'd');
-                    var time = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                var latest = data[0];
+                var seconds = convertMilliseconds(latest.end - latest.start, 's');
+                var minutes = convertMilliseconds(latest.end - latest.start, 'm');
+                var hours = convertMilliseconds(latest.end - latest.start, 'h');
+                var days = convertMilliseconds(latest.end - latest.start, 'd');
+                var time = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-                    var link = 'https://' + (zone == 'classic' ? 'classic.' : '') + 'warcraftlogs.com/reports/' + latest.id;
+                var link = 'https://' + (zone == 'classic' ? 'classic.' : '') + 'warcraftlogs.com/reports/' + latest.id;
 
-                    message.channel.send(`Latest log: **${latest.title}**\nDuration: **${time}**\n${link}`);
-                }
-                /*var joke = JSON.parse(body);
-                if(jokes.indexOf(joke.id) > -1)
-                {
-                    console.log(`we've already told joke ${joke.id}! rerolling`);
-                    theThing();
-                }else{
-                    message.reply(joke.joke);
-                    db.push('/used_jokes[]',joke.id);
-                    if(jokes.length>50)
-                    {
-                        db.delete('/used_jokes[0]');
-                    }
-                }*/
+                message.channel.send(`Latest log: **${latest.title}**\nDuration: **${time}**\n${link}`);
             }else{
                 console.log((error?error:response));
                 message.channel.send(`WarcraftLogs returned an error: ${response.statusCode}`);
