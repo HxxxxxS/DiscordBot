@@ -6,6 +6,9 @@
         "apikey":       "lastfm_api_key_here",
         "apisecret":    "lastfm_api_secret_here"
     },
+    "warcraft_logs": {
+            "apikey" : "warcraft_logs_api_key_here"
+    },
     "commandPrefix":    "!",
     "commands": [
         {

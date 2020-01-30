@@ -9,7 +9,8 @@ var DbHelper        = require('./DbHelper.js'),
     Roll            = require('./Roll.js'),
     DadJoke         = require('./DadJoke.js'),
     OnyxiaReset     = require('./OnyxiaReset.js'),
-    CustomCmd       = require('./CustomCmd.js');
+    CustomCmd       = require('./CustomCmd.js'),
+    WarcraftLogs    = require('./WarcraftLogs.js');
 
 var HxBot = function() {
     this.config     = require('../config.json');
@@ -23,7 +24,8 @@ var HxBot = function() {
     this.DadJoke    = new DadJoke;
     this.OnyxiaReset= new OnyxiaReset;
     this.CustomCmd  = new CustomCmd;
-};
+    this.Logs       = new WarcraftLogs;
+}
 
 HxBot.prototype.guildMemberAdd = function (member) {
     let guild = member.guild;
