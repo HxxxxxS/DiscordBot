@@ -41,12 +41,15 @@ WarcraftLogs.prototype.Message = function(message)
             //db.push(`/warcraftlogs/guilds/${id}`, result);
             break;
         default:
-            var guild = db.getData('/warcraftlogs/guilds/' + id);
-            if (guild) {
+            try {
+                var guild = db.getData('/warcraftlogs/guilds/' + id);
                 message.channel.send(getLatestLog(guild));
                 message.delete();
+            } catch (error) {
+                message.reply(`There is no WarcraftLogs Guild related to this discord server. See the **${config.commandPrefix}help** command on how to set it.`);
             }
             break;
+
     }
 
     function getLatestLog(guildId, test = false)
