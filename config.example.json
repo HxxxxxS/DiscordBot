@@ -65,6 +65,12 @@
             "desc":     "Remove a custom command for this Discord server.",
             "syntax":   "remove foo",
             "callback": "CustomCmd"
+        },
+        {
+            "cmd": "log",
+            "desc": "Links the most recent log posted to WarcraftLogs. Use !logs set to set Guild Name.",
+            "callback": "Logs",
+            "syntax": "logs [set] [classic|retail region realm Guild Name]"
         }
     ]
 }
