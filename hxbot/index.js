@@ -11,6 +11,7 @@ var DbHelper        = require('./DbHelper.js'),
     OnyxiaReset     = require('./OnyxiaReset.js'),
     CustomCmd       = require('./CustomCmd.js'),
     WarcraftLogs    = require('./WarcraftLogs.js');
+    SongFlower    = require('./SongFlower.js');
 
 var HxBot = function() {
     this.config     = require('../config.json');
@@ -25,6 +26,7 @@ var HxBot = function() {
     this.OnyxiaReset= new OnyxiaReset;
     this.CustomCmd  = new CustomCmd;
     this.Logs       = new WarcraftLogs;
+    this.SongFlower = new SongFlower;
 }
 
 HxBot.prototype.guildMemberAdd = function (member) {
@@ -73,7 +75,7 @@ HxBot.prototype.checkMessageForEasterEggs = function(message)
         },
         {
             pattern: /^g+oo+n+\!*$/i,
-            response: 'SQUA'+'A'.repeat(message.content.length-4)+'D'
+            response: 'SQUA'+'A'.repeat(Math.max(message.content.length-4, 1))+'D'
         },
         {
             pattern: /i+['´`]?m+ g+a+y+/i,
