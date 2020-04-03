@@ -2,7 +2,7 @@ var OnyxiaModule = function () {};
 
 OnyxiaModule.prototype.Message = function(message)
 {
-    var reset = new Date('2019-12-30T06:00:00.000Z');
+    var reset = new Date('2019-12-30T07:00:00.000Z');
 
     const convertMilliseconds = (miliseconds, format) =>
     {
@@ -61,7 +61,7 @@ OnyxiaModule.prototype.Message = function(message)
         return cal;
     }
 
-    message.channel.send(`Next Onyxia reset is in **${renderCountdown()}**\nUpcoming resets and kill windows:\n\`\`\`${renderCalendar()}\`\`\`*(Every reset is at 06:00 AM server time)*\nMolten Core always resets on Wednesday morning.`)
+    message.channel.send(`Next Onyxia reset is in **${renderCountdown()}**\nUpcoming resets and kill windows:\n\`\`\`${renderCalendar()}\`\`\`*(Every reset is at 07:00 AM server time)*\nMolten Core always resets on Wednesday morning.`)
 }
 
 module.exports = OnyxiaModule;
