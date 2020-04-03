@@ -50,7 +50,7 @@
             "callback": "DadJoke"
         },
         {
-            "cmd":      "onyxia",
+            "cmd":      "ony",
             "desc":     "Display the next Onyxia reset (WoW Classic).",
             "callback": "OnyxiaReset"
         },
@@ -71,6 +71,12 @@
             "desc": "Links the most recent log posted to WarcraftLogs. Use !logs set to set Guild Name.",
             "callback": "Logs",
             "syntax": "logs [set] [classic|retail region realm Guild Name]"
+        },
+        {
+            "cmd": "songflower",
+            "desc": "Calculates upcoming songflower spawns.",
+            "callback": "SongFlower",
+            "syntax": "songflower [now|11:53]"
         }
     ]
 }
