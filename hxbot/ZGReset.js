@@ -92,7 +92,7 @@ ZGModule.prototype.Message = function(message)
     }
 
     const renderColumn = (index) => {
-        var col = "¯\n"
+        var col = "\u200b\n"
         for (var i = 0 - reset.getDay() - 7; i < 14 - reset.getDay(); i++)
         {
             var day = new Date();
@@ -131,7 +131,7 @@ ZGModule.prototype.Message = function(message)
         embed: {
             fields: [{
                 name:'Upcoming resets and kill windows:',
-                value: "-",
+                value: "\u200b",
                 inline: false
              },
              {

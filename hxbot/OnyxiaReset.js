@@ -76,7 +76,7 @@ OnyxiaModule.prototype.Message = function(message)
     }
     
     const renderColumn = (index) => {
-        var col = "¯\n"
+        var col = "\u200b\n"
         for (var i = 0 - reset.getDay(); i < 21 - reset.getDay(); i++)
         {
             var day = new Date();
@@ -115,7 +115,7 @@ OnyxiaModule.prototype.Message = function(message)
         embed: {
             fields: [{
                 name:'Upcoming resets and kill windows:',
-                value: "-",
+                value: "\u200b",
                 inline: false
              },
              {
