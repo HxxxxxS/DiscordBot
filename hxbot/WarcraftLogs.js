@@ -31,7 +31,7 @@ WarcraftLogs.prototype.Message = function(message)
         var ret = '';
 
         if (days) ret += (days > 9 ? days : '0'+days)+':';
-        if (hours) ret += (hours > 9 ? hours : '0'+hours)+':';
+        ret += (hours > 9 ? hours : '0'+hours)+':';
         ret += (minutes > 9 ? minutes : '0'+minutes)+':';
         ret += (seconds > 9 ? seconds : '0'+seconds);
 
@@ -127,9 +127,11 @@ WarcraftLogs.prototype.Message = function(message)
                 for (var j = 0; j<enemy.fights.length; j++)
                 {
                     var fight = data.fights[enemy.fights[j].id-1];
-                    field.value += "["+(fight.kill ? "✅" : "❌") + " - ";
-                    field.value += convertMilliseconds(fight.kill ? fight.start_time : fight.end_time);
-                    field.value += "]("+link+"#fight="+fight.id+") "+"\n";
+                    var time = convertMilliseconds(fight.kill ? fight.start_time : fight.end_time);
+                    field.value += (fight.kill ? "✅" : "❌") + " - ";
+                    field.value += "["+time;
+                    field.value += "]("+link+"#fight="+fight.id+" 'Click to go to ";
+                    field.value += enemy.name+" "+(fight.kill?'kill':'wipe')+" at "+time+"') "+"\n";
                     if (fight.kill) break;
                 }
 
