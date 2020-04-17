@@ -55,6 +55,11 @@
             "callback": "OnyxiaReset"
         },
         {
+            "cmd":      "zg",
+            "desc":     "Display the next Zul'Gurub reset (WoW Classic).",
+            "callback": "ZGReset"
+        },
+        {
             "cmd":      "set",
             "desc":     "Set a custom command for this Discord server.",
             "syntax":   "set foo bar",
