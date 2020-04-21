@@ -1,5 +1,13 @@
 var OnyxiaModule = function () {};
 
+const pad = (number, length) => {
+    var str = '' + number;
+    while (str.length < length) {
+        str = '0' + str;
+    }
+    return str;
+}
+
 OnyxiaModule.prototype.Message = function(message)
 {
     var reset = new Date('2019-12-30T07:00:00.000Z');
@@ -82,27 +90,22 @@ OnyxiaModule.prototype.Message = function(message)
             var day = new Date();
             day.setMonth(reset.getMonth());
             day.setDate(reset.getDate()+i+1);
-            
-            var text = (resets.indexOf(day.getDate()) > -1 ? 'RE' : day.getDate());
-            var paddedDay = ("`" + " ".repeat(4 - Math.max(text.toString().length),1) + text + " ".repeat(4 - Math.max(text.toString().length/2),1) + "` ");
 
-            if (day.getDate() == new Date().getDate()) paddedDay = "` today ` ";
+            var text = (resets.indexOf(day.getDate()) > -1 ? '`🔄`' : " `"+pad(day.getDate(), 2)+"` ");
+            if (day.getDate() == new Date().getDate()) text = '`✅`';
+            var paddedDay = (" ⬛️" + text + "⬛️ ");
             
             if (index == 0)
             {
-                if (day.getDay() == 1)
-                {
-                    col += "`        `";
-                    col += " | "+paddedDay+"\n\n";
-                }
+                if (day.getDay() == 1) col += " "+paddedDay;
+                if (day.getDay() == 2) col += paddedDay+" \n\n"
             } else if (index == 1)
             {
-                if (day.getDay() == 2) col += paddedDay;
                 if (day.getDay() == 3) col += paddedDay;
-                if (day.getDay() == 4) col += paddedDay+" \n\n";
+                if (day.getDay() == 4) col += paddedDay;
+                if (day.getDay() == 5) col += paddedDay+" \n\n";
             } else if (index == 2)
             {
-                if (day.getDay() == 5) col += paddedDay;
                 if (day.getDay() == 6) col += paddedDay;
                 if (day.getDay() == 0) col += paddedDay+" \n\n";
             }
@@ -112,31 +115,31 @@ OnyxiaModule.prototype.Message = function(message)
     
     message.channel.send(
     `Next Onyxia reset is in **${renderCountdown()}**`,{
-        embed: {
+         embed: {
             fields: [{
                 name:'Upcoming resets and kill windows:',
                 value: "\u200b",
                 inline: false
-             },
-             {
-                name: "`        ` | `  Mon  `",
+            },
+            {
+                name: ":regional_indicator_m::regional_indicator_o::regional_indicator_n: \u200b :regional_indicator_t::regional_indicator_u::regional_indicator_e:",
                 value: renderColumn(0),
                 inline: true
-             },
-             {
-                name: "`  Tue  ` `  Wed  ` `  Thu   `",
+            },
+            {
+                name: ":regional_indicator_w::regional_indicator_e::regional_indicator_d: \u200b :regional_indicator_t::regional_indicator_h::regional_indicator_u: \u200b :regional_indicator_f::regional_indicator_r::regional_indicator_i:",
                 value: renderColumn(1),
                 inline: true
-             },
-             {
-                name: "`  Fri  ` `  Sat  ` `  Sun  `",
+            },
+            {
+                name: ":regional_indicator_s::regional_indicator_a::regional_indicator_t: \u200b :regional_indicator_s::regional_indicator_u::regional_indicator_n:",
                 value: renderColumn(2),
                 inline: true
-             }],
-             footer: {
-                text:`Every reset is at 08:00 AM server time\nMolten Core and Blackwing Lair always resets on Wednesday morning.`
-             }
-         }
+            }],
+            footer: {
+                text:"Legend:\n✅ - Today\n🔄 - Reset this day\nEvery reset is at 08:00 AM server time\nMolten Core and Blackwing Lair always resets on Wednesday morning."
+            }
+        }
      })
  }
 

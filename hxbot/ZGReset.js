@@ -12,6 +12,14 @@ Date.prototype.getWeek = function() {
                         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
+const pad = (number, length) => {
+    var str = '' + number;
+    while (str.length < length) {
+        str = '0' + str;
+    }
+    return str;
+}
+
 ZGModule.prototype.Message = function(message)
 {
     var reset = new Date('2020-04-13T08:00:00.000Z');
@@ -93,23 +101,22 @@ ZGModule.prototype.Message = function(message)
 
     const renderColumn = (index) => {
         var col = "\u200b\n"
-        for (var i = 0 - reset.getDay() - 7; i < 14 - reset.getDay(); i++)
+        for (var i = 0 - reset.getDay() - 7; i < 28 - reset.getDay(); i++)
         {
             var day = new Date();
             day.setMonth(reset.getMonth());
             day.setDate(reset.getDate()+i+1);
-            
-            var text = (resets.indexOf(day.getDate()) > -1 ? '🔁' : day.getDate());
-            var paddedDay = ("`" + " ".repeat(4 - Math.max(text.toString().length),1) + text + " ".repeat(4 - Math.max(text.toString().length/2),1) + "` ");
 
-            if (day.getDate() == new Date().getDate()) paddedDay = "` today ` ";
+            var text = (resets.indexOf(day.getDate()) > -1 ? '`🔄`' : " `"+pad(day.getDate(), 2)+"` ");
+            if (day.getDate() == new Date().getDate()) text = '`✅`';
+            var paddedDay = (" ⬛️" + text + "⬛️ ");
 
             if (index == 0)
             {
                 if (day.getDay() == 1)
                 {
                     col += "`"+getMadnessBoss(day)+"`";
-                    col += " | "+paddedDay+"\n\n";
+                    col += " "+paddedDay+"\n\n";
                 }
             } else if (index == 1)
             {
@@ -133,26 +140,26 @@ ZGModule.prototype.Message = function(message)
                 name:'Upcoming resets and kill windows:',
                 value: "\u200b",
                 inline: false
-             },
-             {
-                name: "`  EoM   ` | `  Mon  `",
+            },
+            {
+                name: "`  EoM   ` :regional_indicator_m::regional_indicator_o::regional_indicator_n:",
                 value: renderColumn(0),
                 inline: true
-             },
-             {
-                name: "`  Tue  ` `  Wed  ` `  Thu   `",
+            },
+            {
+                name: ":regional_indicator_t::regional_indicator_u::regional_indicator_e: \u200b :regional_indicator_w::regional_indicator_e::regional_indicator_d: \u200b :regional_indicator_t::regional_indicator_h::regional_indicator_u:",
                 value: renderColumn(1),
                 inline: true
-             },
-             {
-                name: "`  Fri  ` `  Sat  ` `  Sun  `",
+            },
+            {
+                name: ":regional_indicator_f::regional_indicator_r::regional_indicator_i: \u200b :regional_indicator_s::regional_indicator_a::regional_indicator_t: \u200b :regional_indicator_s::regional_indicator_u::regional_indicator_n:",
                 value: renderColumn(2),
                 inline: true
-             }],
-             footer: {
-                text:`Every reset is at 09:00 AM server time\nMolten Core and Blackwing Lair always resets on Wednesday morning.`
-             }
-         }
+            }],
+            footer: {
+                text:"Legend:\n✅ - Today\n🔄 - Reset this day\nEoM - https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week.\nEvery reset is at 09:00 AM server time\nMolten Core and Blackwing Lair always resets on Wednesday morning."
+            }
+        }
      })
  }
 
