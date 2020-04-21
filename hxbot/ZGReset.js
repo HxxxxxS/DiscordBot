@@ -31,8 +31,8 @@ ZGModule.prototype.Message = function(message)
         while (tmpWk <= currWk)
         {
             bossIndex++;
-            if (bossIndex>madnessCycle.length) bossIndex = 0;
-            tmpWk++;
+            if (bossIndex>=madnessCycle.length) bossIndex = 0;
+            tmpWk+=2;
         }
         return madnessCycle[bossIndex];
     }
@@ -99,7 +99,7 @@ ZGModule.prototype.Message = function(message)
             day.setMonth(reset.getMonth());
             day.setDate(reset.getDate()+i+1);
             
-            var text = (resets.indexOf(day.getDate()) > -1 ? 'RE' : day.getDate());
+            var text = (resets.indexOf(day.getDate()) > -1 ? '🔁' : day.getDate());
             var paddedDay = ("`" + " ".repeat(4 - Math.max(text.toString().length),1) + text + " ".repeat(4 - Math.max(text.toString().length/2),1) + "` ");
 
             if (day.getDate() == new Date().getDate()) paddedDay = "` today ` ";
