@@ -38,7 +38,7 @@ WarcraftLogs.prototype.Message = function(message)
         return ret;
     };
 
-    const getLatestLog = (guildId) =>
+    const getLatestLog = (cb, guildId) =>
     {
         var zone = guildId.split('|')[1];
         var guild = guildId.split('|')[0];
@@ -60,7 +60,7 @@ WarcraftLogs.prototype.Message = function(message)
             if (!error && response.statusCode == 200) {
                 var data = JSON.parse(body);
                 var latest = data[0];
-                getLog(latest.id, zone);
+                getLog(cb, latest.id, zone);
             }else{
                 console.log((error?error:response));
                 message.channel.send(`WarcraftLogs returned an error: ${response.statusCode}`);
@@ -68,7 +68,7 @@ WarcraftLogs.prototype.Message = function(message)
         });
     }
 
-    const getLog = (code, zone) =>
+    const getLog = (cb, code, zone) =>
     {
         var headers = {
             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ WarcraftLogs.prototype.Message = function(message)
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var data = JSON.parse(body);
-                sendTheThing(code, zone, data);
+                sendTheThing(cb, code, zone, data);
             }else{
                 console.log((error?error:response));
                 message.channel.send(`WarcraftLogs returned an error: ${response.statusCode}`);
@@ -94,7 +94,7 @@ WarcraftLogs.prototype.Message = function(message)
         });
     }
 
-    const sendTheThing = (code, zone, data) =>
+    const sendTheThing = (cb, code, zone, data) =>
     {
         var link = 'https://' + (zone == 'classic' ? 'classic.' : '') + 'warcraftlogs.com/reports/' + code;
 
@@ -146,8 +146,7 @@ WarcraftLogs.prototype.Message = function(message)
         if (['1002','1003'].indexOf(String(data.zone)) > -1) fields.push({name:"\u200b ",value:"\u200b ",inline:true})
 
         fields.push({name:'See the full log:',value:'['+link+']('+link+')'});
-
-        message.channel.send("Latest log:", {embed: {thumbnail:{ url: 'https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-'+data.zone+'-small.jpg' },fields}});
+        cb.edit("Latest log:", {embed: {thumbnail:{ url: 'https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-'+data.zone+'-small.jpg' },fields}});
     }
 
     switch (message.channel.type) {
@@ -189,7 +188,8 @@ WarcraftLogs.prototype.Message = function(message)
         default:
             try {
                 var guild = db.getData('/warcraftlogs/guilds/' + id);
-                getLatestLog(guild);
+                message.channel.send('Getting latest log...')
+                .then((sent) => {getLatestLog(sent, guild)});
                 message.delete();
             } catch (error) {
                 message.reply(`There is no WarcraftLogs Guild related to this discord server. See the **${config.commandPrefix}help** command on how to set it.`);
