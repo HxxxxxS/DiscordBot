@@ -127,8 +127,9 @@ WarcraftLogs.prototype.Message = function(message)
                 {
                     enemy = data.enemies[j];
                     if (fight.name == enemy.name) break;
+                    if (data.enemies[j].type != "Boss") enemy = undefined;
                 }
-
+                if (!enemy) continue;
                 field = {name: enemy.name, value: '', inline: true}
 
                 for (var j = 0; j<enemy.fights.length; j++)
@@ -150,7 +151,7 @@ WarcraftLogs.prototype.Message = function(message)
         if (bosses % 3 != 0) fields.push({name:"\u200b ",value:"\u200b ",inline:true})
 
         fields.push({name:'See the full log:',value:'['+link+']('+link+')'});
-        cb.edit("Latest log:", {embed: {thumbnail:{ url: 'https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-'+data.zone+'-small.jpg' },fields}});
+        cb.edit({embed: {thumbnail:{ url: 'https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-'+data.zone+'-small.jpg' },fields}});
     }
 
     switch (message.channel.type) {
@@ -196,7 +197,7 @@ WarcraftLogs.prototype.Message = function(message)
                 var guild = guildId.split('|')[0];
                 if (msgArr[1])
                 {
-                    message.channel.send('Getting log...')
+                    message.channel.send('Getting specified log...')
                     .then((sent) => {getLog(sent, msgArr[1], zone)});
                 } else {
                     message.channel.send('Getting latest log...')
