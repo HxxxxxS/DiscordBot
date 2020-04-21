@@ -100,7 +100,8 @@ WarcraftLogs.prototype.Message = function(message)
 
         var fields = [{
             name: '\u200b',
-            value:  'Zone: **' + raids[data.zone] + "**\n" +
+            value:  'Title: **__'+data.title+"__**\n" +
+                    'Zone: **' + raids[data.zone] + "**\n" +
                     'Date: **' + new Date(data.start).toDateString() + "**\n" +
                     'Duration: **' + convertMilliseconds(data.end - data.start) + "**\n"
         },{name:'\u200b',value:'Bosses:'}];
