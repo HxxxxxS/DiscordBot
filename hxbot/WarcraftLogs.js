@@ -70,6 +70,10 @@ WarcraftLogs.prototype.Message = function(message)
 
     const getLog = (cb, code, zone) =>
     {
+        if(code.indexOf("http") > -1){
+            if(code.indexOf("#") > -1) code = code.split("#")[0];
+            code = code.split("/")[code.split("/").length - 1];
+        }
         var headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -101,7 +105,7 @@ WarcraftLogs.prototype.Message = function(message)
         var fields = [{
             name: '\u200b',
             value:  'Title: **__'+data.title+"__**\n" +
-                    'Zone: **' + raids[data.zone] + "**\n" +
+                    //'Zone: **' + raids[data.zone] + "**\n" +
                     'Date: **' + new Date(data.start).toDateString() + "**\n" +
                     'Duration: **' + convertMilliseconds(data.end - data.start) + "**\n"
         },{name:'\u200b',value:'Bosses:'}];
@@ -143,8 +147,7 @@ WarcraftLogs.prototype.Message = function(message)
             }
             if (fight.end_time > timer) timer = fight.end_time;
         }
-
-        if (['1002','1003'].indexOf(String(data.zone)) > -1) fields.push({name:"\u200b ",value:"\u200b ",inline:true})
+        if (bosses % 3 != 0) fields.push({name:"\u200b ",value:"\u200b ",inline:true})
 
         fields.push({name:'See the full log:',value:'['+link+']('+link+')'});
         cb.edit("Latest log:", {embed: {thumbnail:{ url: 'https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-'+data.zone+'-small.jpg' },fields}});
@@ -188,9 +191,17 @@ WarcraftLogs.prototype.Message = function(message)
             break;
         default:
             try {
-                var guild = db.getData('/warcraftlogs/guilds/' + id);
-                message.channel.send('Getting latest log...')
-                .then((sent) => {getLatestLog(sent, guild)});
+                var guildId = db.getData('/warcraftlogs/guilds/' + id);
+                var zone = guildId.split('|')[1];
+                var guild = guildId.split('|')[0];
+                if (msgArr[1])
+                {
+                    message.channel.send('Getting log...')
+                    .then((sent) => {getLog(sent, msgArr[1], zone)});
+                } else {
+                    message.channel.send('Getting latest log...')
+                    .then((sent) => {getLatestLog(sent, guildId)});
+                }
                 message.delete();
             } catch (error) {
                 message.reply(`There is no WarcraftLogs Guild related to this discord server. See the **${config.commandPrefix}help** command on how to set it.`);
