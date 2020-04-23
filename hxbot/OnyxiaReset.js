@@ -85,7 +85,7 @@ OnyxiaModule.prototype.Message = function(message)
     
     const renderColumn = (index) => {
         var col = "\u200b\n"
-        for (var i = 0 - reset.getDay(); i < 21 - reset.getDay(); i++)
+        for (var i = 0 - reset.getDay() - 7; i < 14 - reset.getDay(); i++)
         {
             var day = new Date();
             day.setMonth(reset.getMonth());
