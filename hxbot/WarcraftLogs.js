@@ -117,7 +117,7 @@ WarcraftLogs.prototype.Message = function(message)
         for (var i = 0; i<data.fights.length; i++)
         {
             var fight = data.fights[i];
-            if (fight.end_time < timer) break;
+            //if (fight.end_time < timer) break;
             if (fight.boss)
             {
                 if (bosses.indexOf(fight.name)>-1) continue;
