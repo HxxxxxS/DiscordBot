@@ -202,6 +202,7 @@ WarcraftLogs.prototype.Message = function(message)
             var link = msgArr[3];
             message.channel.fetchMessage(msgID)
             .then((sent)=>{getLog(sent, link, zone)})
+            message.delete();
             break;
         default:
             try {
