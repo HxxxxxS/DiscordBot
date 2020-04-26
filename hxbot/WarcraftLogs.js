@@ -134,7 +134,11 @@ WarcraftLogs.prototype.Message = function(message)
                 for (var j = 0; j<enemy.fights.length; j++)
                 {
                     var spec_fight = data.fights[enemy.fights[j].id-1];
-                    if (field.value.length > 999) break;
+                    if (field.value.length > 666)
+                    {
+                        fields.push(field);
+                        field = {name: enemy.name, value: '', inline: true}
+                    }
                     if (!spec_fight.boss) continue;
                     var time = convertMilliseconds(spec_fight.kill ? spec_fight.start_time : spec_fight.end_time);
                     field.value += (spec_fight.kill ? "✅" : "❌") + " - ";
