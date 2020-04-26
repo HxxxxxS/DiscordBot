@@ -120,8 +120,8 @@ WarcraftLogs.prototype.Message = function(message)
             //if (fight.end_time < timer) break;
             if (fight.boss)
             {
-                if (bosses.indexOf(fight.name)>-1) continue;
-                bosses.push(fight.name);
+                if (bosses.indexOf(fight.boss)>-1) continue;
+                bosses.push(fight.boss);
                 var enemy;
                 for (var j = 0; j<data.enemies.length; j++)
                 {
@@ -134,8 +134,9 @@ WarcraftLogs.prototype.Message = function(message)
 
                 for (var j = 0; j<enemy.fights.length; j++)
                 {
-                    if (field.value.length > 999) break;
                     var fight = data.fights[enemy.fights[j].id-1];
+                    if (field.value.length > 999) break;
+                    if (!fight.boss) continue;
                     var time = convertMilliseconds(fight.kill ? fight.start_time : fight.end_time);
                     field.value += (fight.kill ? "✅" : "❌") + " - ";
                     field.value += "["+time;
