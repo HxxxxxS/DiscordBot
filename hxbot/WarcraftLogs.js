@@ -165,6 +165,9 @@ WarcraftLogs.prototype.Message = function(message)
     }
 
     if (!id) return false;
+    var guildId = db.getData('/warcraftlogs/guilds/' + id);
+    var zone = guildId.split('|')[1];
+    var guild = guildId.split('|')[0];
 
     var msgArr = message.content.split(" ");
 
@@ -190,11 +193,18 @@ WarcraftLogs.prototype.Message = function(message)
                 message.reply(`Something went wrong. See the **${config.commandPrefix}help** command on how to do it right.`)
             }
             break;
+        case 'fix':
+            if (msgArr.length < 3) {
+                message.reply(`You sent too few parameters.`)
+                return false;
+            }
+            var msgID = msgArr[2];
+            var link = msgArr[3];
+            message.channel.fetchMessage(msgID)
+            .then((sent)=>{getLog(sent, link, zone)})
+            break;
         default:
             try {
-                var guildId = db.getData('/warcraftlogs/guilds/' + id);
-                var zone = guildId.split('|')[1];
-                var guild = guildId.split('|')[0];
                 if (msgArr[1])
                 {
                     message.channel.send('Getting specified log...')
