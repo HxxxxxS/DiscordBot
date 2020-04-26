@@ -117,7 +117,7 @@ WarcraftLogs.prototype.Message = function(message)
         for (var i = 0; i<data.fights.length; i++)
         {
             var fight = data.fights[i];
-            //if (fight.end_time < timer) break;
+            if (fight.end_time < timer) break;
             if (fight.boss)
             {
                 if (bosses.indexOf(fight.boss)>-1) continue;
@@ -131,18 +131,17 @@ WarcraftLogs.prototype.Message = function(message)
                 }
                 if (!enemy) continue;
                 field = {name: enemy.name, value: '', inline: true}
-
                 for (var j = 0; j<enemy.fights.length; j++)
                 {
-                    var fight = data.fights[enemy.fights[j].id-1];
+                    var spec_fight = data.fights[enemy.fights[j].id-1];
                     if (field.value.length > 999) break;
-                    if (!fight.boss) continue;
-                    var time = convertMilliseconds(fight.kill ? fight.start_time : fight.end_time);
-                    field.value += (fight.kill ? "✅" : "❌") + " - ";
+                    if (!spec_fight.boss) continue;
+                    var time = convertMilliseconds(spec_fight.kill ? spec_fight.start_time : spec_fight.end_time);
+                    field.value += (spec_fight.kill ? "✅" : "❌") + " - ";
                     field.value += "["+time;
-                    field.value += "]("+link+"#fight="+fight.id+" 'Click to go to ";
-                    field.value += enemy.name+" "+(fight.kill?'kill':'wipe')+" at "+time+"') "+"\n";
-                    if (fight.kill) break;
+                    field.value += "]("+link+"#spec_fight="+spec_fight.id+" 'Click to go to ";
+                    field.value += enemy.name+" "+(spec_fight.kill?'kill':'wipe')+" at "+time+"') "+"\n";
+                    if (spec_fight.kill) break;
                 }
 
                 fields.push(field);
