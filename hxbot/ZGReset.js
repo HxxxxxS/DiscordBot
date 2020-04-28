@@ -136,28 +136,12 @@ ZGModule.prototype.Message = function(message)
     message.channel.send(
     `Next Zul\'Gurub reset is in **${renderCountdown()}**`,{
         embed: {
-            fields: [{
-                name:'Upcoming resets and kill windows:',
-                value: "\u200b",
-                inline: false
-            },
-            {
-                name: "`  EoM   ` :regional_indicator_m::regional_indicator_o::regional_indicator_n:",
-                value: renderColumn(0),
-                inline: true
-            },
-            {
-                name: ":regional_indicator_t::regional_indicator_u::regional_indicator_e: \u200b :regional_indicator_w::regional_indicator_e::regional_indicator_d: \u200b :regional_indicator_t::regional_indicator_h::regional_indicator_u:",
-                value: renderColumn(1),
-                inline: true
-            },
-            {
-                name: ":regional_indicator_f::regional_indicator_r::regional_indicator_i: \u200b :regional_indicator_s::regional_indicator_a::regional_indicator_t: \u200b :regional_indicator_s::regional_indicator_u::regional_indicator_n:",
-                value: renderColumn(2),
-                inline: true
-            }],
             footer: {
-                text:"Legend:\n✅ - Today\n🔄 - Reset this day\nEoM - https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week.\nEvery reset is at 09:00 AM server time\nMolten Core and Blackwing Lair always resets on Wednesday morning."
+                text:"🔄 - Reset this day\nThe names indicate Edge of Madness https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week.\nEvery reset is at 09:00 AM server time.\n"
+            },
+            image: {
+                title:'Upcoming resets and kill windows:',
+                url: "https://labs.han.sx/ZG/zg.php?" + new Date().getDate() + '-' + new Date().getMonth()
             }
         }
      })
