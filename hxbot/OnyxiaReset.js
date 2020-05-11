@@ -1,3 +1,6 @@
+var request = require('request')
+    config = require('../config.json');
+
 var OnyxiaModule = function () {};
 
 const pad = (number, length) => {
@@ -68,18 +71,61 @@ OnyxiaModule.prototype.Message = function(message)
         return `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    message.channel.send(
-    `Next Onyxia reset is in **${renderCountdown()}**`,{
+    var url = "https://labs.han.sx/ZG/ony.php?"+new Date().getDate()+new Date().getMonth();
+
+    message.channel.send(`Next Onyxia reset is in **${renderCountdown()}**`, {
         embed: {
             footer: {
-                text:"🔄 - Reset this day."
+                text:"Loading calendar..."
             },
             image: {
-                title:'Upcoming resets and kill windows:',
-                url: "https://labs.han.sx/ZG/ony.php?" + new Date().getDate() + '-' + new Date().getMonth() + '-' + message.author.id
+                title: 'Onyxia Calendar',
+                url: url
             }
         }
-     })
+    })
+    .then((reply) => {
+        var headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'https://github.com/HxxxxxS/DiscordBot',
+            'Authorization': 'Client-ID ' + config.imgur.clientID
+        }
+
+        var options = {
+            url: 'https://api.imgur.com/3/image.json',
+            port: 443,
+            method: 'POST',
+            headers: headers,
+            form: { 
+                image: url
+            }
+        }
+
+        request(options, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var data = JSON.parse(body).data;
+                changeToCached(data.link);
+            }else{
+                console.log((error?error:response));
+            }
+        });
+
+        var changeToCached = (url) => {
+            reply.edit(
+                `Next Onyxia reset is in **${renderCountdown()}**`,{
+                embed: {
+                    footer: {
+                        text:"🔄 - Reset this day."
+                    },
+                    image: {
+                        title: 'Onyxia Calendar',
+                        url: url
+                    }
+                }
+            })
+        }
+    })
  }
 
 module.exports = OnyxiaModule;

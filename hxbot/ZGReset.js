@@ -1,3 +1,6 @@
+var request = require('request')
+    config = require('../config.json');
+
 var ZGModule = function () {};
 
 Date.prototype.getWeek = function() {
@@ -99,52 +102,62 @@ ZGModule.prototype.Message = function(message)
         return `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    const renderColumn = (index) => {
-        var col = "\u200b\n"
-        for (var i = 0 - reset.getDay() - 7; i < 28 - reset.getDay(); i++)
-        {
-            var day = new Date();
-            day.setMonth(reset.getMonth());
-            day.setDate(reset.getDate()+i+1);
+    var url = "https://labs.han.sx/ZG/zg.php?" + new Date().getDate()
+            + '-' + new Date().getMonth() + '-' + message.author.id;
 
-            var text = (resets.indexOf(day.getDate()) > -1 ? '`🔄`' : " `"+pad(day.getDate(), 2)+"` ");
-            if (day.getDate() == new Date().getDate()) text = '`✅`';
-            var paddedDay = (" ⬛️" + text + "⬛️ ");
-
-            if (index == 0)
-            {
-                if (day.getDay() == 1)
-                {
-                    col += "`"+getMadnessBoss(day)+"`";
-                    col += " "+paddedDay+"\n\n";
-                }
-            } else if (index == 1)
-            {
-                if (day.getDay() == 2) col += paddedDay;
-                if (day.getDay() == 3) col += paddedDay;
-                if (day.getDay() == 4) col += paddedDay+" \n\n";
-            } else if (index == 2)
-            {
-                if (day.getDay() == 5) col += paddedDay;
-                if (day.getDay() == 6) col += paddedDay;
-                if (day.getDay() == 0) col += paddedDay+" \n\n";
-            }
-        }
-        return col;
-    }
-
-    message.channel.send(
-    `Next Zul\'Gurub reset is in **${renderCountdown()}**`,{
+    message.channel.send(`Next Zul\'Gurub reset is in **${renderCountdown()}**`, {
         embed: {
             footer: {
-                text:"🔄 - Reset this day\nThe names indicate Edge of Madness https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week."
+                text:"Loading calendar..."
             },
             image: {
-                title:'Upcoming resets and kill windows:',
-                url: "https://labs.han.sx/ZG/zg.php?" + new Date().getDate() + '-' + new Date().getMonth() + '-' + message.author.id
+                title:'Zul\'Gurub Calendar',
+                url: url
             }
         }
-     })
- }
+    })
+    .then((reply) => {
+        var headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'https://github.com/HxxxxxS/DiscordBot',
+            'Authorization': 'Client-ID ' + config.imgur.clientID
+        }
+
+        var options = {
+            url: 'https://api.imgur.com/3/image.json',
+            port: 443,
+            method: 'POST',
+            headers: headers,
+            form: { 
+                image: url
+            }
+        }
+
+        request(options, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var data = JSON.parse(body).data;
+                changeToCached(data.link);
+            }else{
+                console.log((error?error:response));
+            }
+        });
+
+        var changeToCached = (url) => {
+            reply.edit(
+                `Next Zul\'Gurub reset is in **${renderCountdown()}**`,{
+                embed: {
+                    footer: {
+                        text:"🔄 - Reset this day\nThe names indicate Edge of Madness https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week."
+                    },
+                    image: {
+                        title:'Zul\'Gurub Calendar',
+                        url: url
+                    }
+                }
+            })
+        }
+    })
+}
 
 module.exports = ZGModule;
