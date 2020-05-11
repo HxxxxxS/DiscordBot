@@ -13,7 +13,7 @@ const pad = (number, length) => {
 
 OnyxiaModule.prototype.Message = function(message)
 {
-    var reset = new Date('2019-12-30T07:00:00.000Z');
+    var reset = new Date('2019-12-30T08:00:00.000Z');
 
     const rcd = 5;
 

@@ -25,7 +25,7 @@ const pad = (number, length) => {
 
 ZGModule.prototype.Message = function(message)
 {
-    var reset = new Date('2020-04-13T07:00:00.000Z');
+    var reset = new Date('2020-04-28T07:00:00.000Z');
 
     const rcd = 3;
 
