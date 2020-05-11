@@ -76,7 +76,7 @@ OnyxiaModule.prototype.Message = function(message)
             },
             image: {
                 title:'Upcoming resets and kill windows:',
-                url: "https://labs.han.sx/ZG/ony.php?" + new Date().getDate() + '-' + new Date().getMonth()
+                url: "https://labs.han.sx/ZG/ony.php?" + new Date().getDate() + '-' + new Date().getMonth() + '-' + message.author.id
             }
         }
      })

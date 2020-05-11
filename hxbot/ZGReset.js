@@ -22,7 +22,7 @@ const pad = (number, length) => {
 
 ZGModule.prototype.Message = function(message)
 {
-    var reset = new Date('2020-04-13T08:00:00.000Z');
+    var reset = new Date('2020-04-13T07:00:00.000Z');
 
     const rcd = 3;
 
@@ -137,11 +137,11 @@ ZGModule.prototype.Message = function(message)
     `Next Zul\'Gurub reset is in **${renderCountdown()}**`,{
         embed: {
             footer: {
-                text:"🔄 - Reset this day\nThe names indicate Edge of Madness https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week.\nEvery reset is at 09:00 AM server time.\n"
+                text:"🔄 - Reset this day\nThe names indicate Edge of Madness https://wowwiki.fandom.com/wiki/Edge_of_Madness boss of the week."
             },
             image: {
                 title:'Upcoming resets and kill windows:',
-                url: "https://labs.han.sx/ZG/zg.php?" + new Date().getDate() + '-' + new Date().getMonth()
+                url: "https://labs.han.sx/ZG/zg.php?" + new Date().getDate() + '-' + new Date().getMonth() + '-' + message.author.id
             }
         }
      })
