@@ -130,7 +130,8 @@ WarcraftLogs.prototype.Message = function(message)
                     if (data.enemies[j].type != "Boss") enemy = undefined;
                 }
                 if (!enemy) continue;
-                field = {name: enemy.name, value: '', inline: true}
+                var name = (enemy.name.length > 21 ? enemy.name.split(' ')[0] : enemy.name);
+                field = {name: name, value: '', inline: true}
                 for (var j = 0; j<enemy.fights.length; j++)
                 {
                     var spec_fight = data.fights[enemy.fights[j].id-1];
@@ -138,7 +139,7 @@ WarcraftLogs.prototype.Message = function(message)
                     if (field.value.length > 666)
                     {
                         fields.push(field);
-                        field = {name: enemy.name, value: '', inline: true}
+                        field = {name: name, value: '', inline: true}
                     }
                     var timeStart = convertMilliseconds(spec_fight.start_time),
                         timeEnd = convertMilliseconds(spec_fight.end_time);
