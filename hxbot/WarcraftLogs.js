@@ -140,11 +140,12 @@ WarcraftLogs.prototype.Message = function(message)
                         fields.push(field);
                         field = {name: enemy.name, value: '', inline: true}
                     }
-                    var time = convertMilliseconds(spec_fight.kill ? spec_fight.start_time : spec_fight.end_time);
+                    var timeStart = convertMilliseconds(spec_fight.start_time),
+                        timeEnd = convertMilliseconds(spec_fight.end_time);
                     field.value += (spec_fight.kill ? "✅" : "❌") + " - ";
-                    field.value += "["+time;
-                    field.value += "]("+link+"#spec_fight="+spec_fight.id+" 'Click to go to ";
-                    field.value += enemy.name+" "+(spec_fight.kill?'kill':'wipe')+" at "+time+"') "+"\n";
+                    field.value += "["+timeEnd;
+                    field.value += "]("+link+"#fight="+spec_fight.id+" 'Click to go to ";
+                    field.value += enemy.name+" "+(spec_fight.kill?'kill':'wipe')+" at "+timeEnd+"') "+"\n";
                     if (spec_fight.kill) break;
                 }
 
