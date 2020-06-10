@@ -226,7 +226,7 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
     })
 
     for (var i = fields.length - 1; i >= 0; i--) {
-        fields[i].value = fields[i].value.join();
+        fields[i].value = fields[i].value.join()+'\u200b';
         l+=fields[i].value.length;
     }
 
