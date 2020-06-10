@@ -204,7 +204,7 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
         if(!player) continue;
         const icon = emojis.find(emoji => emoji.name === player.type.split('-')[0]);
         let field = {
-            name: `${(icon?icon:'')} ${player.name}`,
+            name: `${(icon?icon+' ':'')}${player.name}`,
             value: [],
             inline: true
         };
@@ -227,12 +227,12 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
 
     for (var i = fields.length - 1; i >= 0; i--) {
         fields[i].value = fields[i].value.join('')+'\u200b';
-        l+=fields[i].value.length;
+        l+=fields[i].value.length+fields[i].name.length;
     }
 
     console.log(fields, l);
 
-    if (l > 5500) {
+    if (l > 5999) {
         let half_length = Math.ceil(fields.length / 2);
         let fields2 = fields.splice(0,half_length);
 
