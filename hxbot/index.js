@@ -11,7 +11,7 @@ var DbHelper        = require('./DbHelper.js'),
     OnyxiaReset     = require('./OnyxiaReset.js'),
     ZGReset         = require('./ZGReset.js'),
     CustomCmd       = require('./CustomCmd.js'),
-    WarcraftLogs    = require('./WarcraftLogs.js');
+    WarcraftLogs    = require('./WarcraftLogs.js'),
     SongFlower      = require('./SongFlower.js');
 
 var HxBot = function() {
@@ -27,7 +27,7 @@ var HxBot = function() {
     this.OnyxiaReset= new OnyxiaReset;
     this.ZGReset    = new ZGReset;
     this.CustomCmd  = new CustomCmd;
-    this.Logs       = new WarcraftLogs;
+    this.WarcraftLogs = new WarcraftLogs;
     this.SongFlower = new SongFlower;
 }
 

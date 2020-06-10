@@ -77,7 +77,7 @@
         {
             "cmd": "log",
             "desc": "Links the most recent log posted to WarcraftLogs. Use !logs set to set Guild Name.",
-            "callback": "Logs",
+            "callback": "WarcraftLogs",
             "syntax": "logs [set] [classic|retail region realm Guild Name]"
         },
         {
