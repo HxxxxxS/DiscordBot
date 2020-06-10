@@ -18,12 +18,13 @@
   },
   "homepage": "https://github.com/HxxxxxS/DiscordBot#readme",
   "dependencies": {
+    "cached-request": "^2.0.1",
     "discord.js": "^11.0.0",
-    "node-json-db": "^0.7.3",
-    "urban": "^0.2.4",
     "lastfmapi": "^0.1.1",
+    "node-json-db": "^0.7.3",
     "random-js": "^1.0.8",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "urban": "^0.2.4"
   },
   "keywords": [
     "hxbot"
