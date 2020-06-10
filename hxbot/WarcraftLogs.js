@@ -232,7 +232,7 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
 
     console.log(fields, l);
 
-    if (l > 5999) {
+    if (l > 5500) {
         let half_length = Math.ceil(fields.length / 2);
         let fields2 = fields.splice(0,half_length);
 
