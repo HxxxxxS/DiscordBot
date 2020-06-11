@@ -156,17 +156,17 @@ const drawOutput = (data, code, cb) => {
     cb.edit({embed: embed});
 }
 
-const getWorldbuffs = (code, cb) => {
+const getWorldbuffs = (code, start, cb) => {
     console.log('getWorldbuffs called!');
-    let url = `https://classic.warcraftlogs.com/v1/report/events/${code}?type=combatantinfo&api_key=${config.warcraft_logs.apikey}`;
+    let url = `https://classic.warcraftlogs.com/v1/report/events/${code}?type=combatantinfo&start=${start}&end=${start}&api_key=${config.warcraft_logs.apikey}`;
     doRequest(url, (data, url) => {
-        cb(data, url);
+        cb(data.events, url);
     });
 }
 
-const drawWorldbuffs = (buffs, log, url, cb) => {
+const drawWorldbuffs = (events, log, url, cb) => {
     console.log('drawWorldbuffs called!');
-    console.log(`Checking ${log.friendlies.length} friendlies and ${buffs.events.length} auras`);
+    console.log(`Checking ${log.friendlies.length} friendlies and ${events.length} events`);
     let code = stripCode(url);
     let link = `https://classic.warcraftlogs.com/reports/${code}`;
     let embed = {
@@ -183,8 +183,9 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
         friendlies[player.id] = {name: player.name, type: player.type, icon: player.icon, buffs: []};
     }
 
-    for (var i = buffs.events.length - 1; i >= 0; i--) {
-        var event = buffs.events[i];
+    for (var i = events.length - 1; i >= 0; i--) {
+        var event = events[i];
+        if (event.type !== 'combatantinfo') continue;
         if (event.hasOwnProperty('auras')) {
             for (var j = event.auras.length - 1; j >= 0; j--) {
                 var aura = event.auras[j];
@@ -213,11 +214,10 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
             if (!buff) continue;
             const emoji = emojis.find(emoji => emoji.name === buff.icon.split('.')[0]);
             field.value.push(emoji);
+            //field.value.push(`[${emoji}](https://classicdb.ch/?spell=${buff.ability} '${buff.name}')`);
         }
         if(field.name && field.value.length){
             fields.push(field);
-        } else {
-
         }
     }
 
@@ -225,16 +225,16 @@ const drawWorldbuffs = (buffs, log, url, cb) => {
         return b.value.length - a.value.length;
     })
 
+
     for (var i = fields.length - 1; i >= 0; i--) {
+        if (fields.length < 9) fields[i].inline = false;
         fields[i].value = fields[i].value.join('')+'\u200b';
         l+=fields[i].value.length+fields[i].name.length;
     }
 
-    console.log(fields, l);
-
-    if (l > 5999) {
-        let half_length = Math.ceil(fields.length / 2);
-        let fields2 = fields.splice(0,half_length);
+    if (l > 5500) {
+        let cutoff = Math.ceil(fields.length / 3);
+        let fields2 = fields.splice(0, cutoff - (cutoff % 3));
 
         fields2.push({name:"Continued in next message ",value:"\u200b ",inline:false});
         fields.push({name:'See the full log:',value:link, inline:false});
@@ -307,7 +307,14 @@ WarcraftLogs.prototype.Message = function(message)
             message.channel.send(`Getting worldbuffs for ${code}...`)
             .then((sent) => {
                 getSpecificLog(code, (log, url) => {
-                    getWorldbuffs(code, (data, url) => {
+                    let start = 0;
+                    for (var i = log.fights.length - 1; i >= 0; i--) {
+                        if (log.fights[i].boss) {
+                            start = log.fights[i].start_time;
+                        }
+                    }
+                    if (log.zone == 1002) start = 0;
+                    getWorldbuffs(code, Math.max(start,0), (data, url) => {
                         drawWorldbuffs(data, log, url, sent);
                     });
                 });
