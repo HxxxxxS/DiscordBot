@@ -169,8 +169,8 @@ const drawWorldbuffs = (events, log, url, cb) => {
     console.log(`Checking ${log.friendlies.length} friendlies and ${events.length} events`);
     let code = stripCode(url);
     let link = `https://classic.warcraftlogs.com/reports/${code}`;
-    let embed = {
-        title: `Worldbuffs for ${log.title} ${new Date(log.start).toDateString()}:`,
+    let header = {
+        title: `Worldbuffs for ${log.title} ${new Date(log.start).toDateString()}`,
         url: link,
         fields: []
     }
@@ -209,12 +209,20 @@ const drawWorldbuffs = (events, log, url, cb) => {
             value: [],
             inline: true
         };
-        for (var j = player.buffs.length - 1; j >= 0; j--) {
+        for (var j = 0; j < player.buffs.length; j++) {
             let buff = player.buffs[j];
             if (!buff) continue;
-            const emoji = emojis.find(emoji => emoji.name === buff.icon.split('.')[0]);
+            let buffName = buff.name.toLowerCase().replace(/\s/g, 'O').replace(/\W/g, '').replace(/O/g,'_');
+            if (buff.icon.split('.')[0] == 'inv_misc_orb_02') buffName = 'sayges_dark_fortune';
+            let emoji = emojis.find(emoji => emoji.name === buffName);
+            if(!emoji) {
+                console.log(`Missing emoji for ${buffName}`);
+                emoji = '❔';
+            }
             field.value.push(emoji);
-            //field.value.push(`[${emoji}](https://classicdb.ch/?spell=${buff.ability} '${buff.name}')`);
+            if (j % 4 == 0 && j > 0) {
+                field.value.push("\n");
+            }
         }
         if(field.name && field.value.length){
             fields.push(field);
@@ -225,28 +233,26 @@ const drawWorldbuffs = (events, log, url, cb) => {
         return b.value.length - a.value.length;
     })
 
+    let page = 1;
+    let slice = 0;
 
-    for (var i = fields.length - 1; i >= 0; i--) {
-        if (fields.length < 9) fields[i].inline = false;
-        fields[i].value = fields[i].value.join('')+'\u200b';
+    for (var i = 0; i < fields.length; i++) {
+        fields[i].value = fields[i].value.join('').trim()+'\u200b';
         l+=fields[i].value.length+fields[i].name.length;
+        if ((l > 5000 && i % 3 == 0) || i == fields.length - 1) {
+            embed = JSON.parse(JSON.stringify(header));
+            embed.title = `${embed.title} #${page}:`;
+            embed.fields = fields.slice(0 + slice, i);
+            slice = i;
+            l = 0;
+            if (page == 1) {
+                cb.edit({embed:embed});
+            } else {
+                cb.channel.send({embed:embed})
+            }
+            page++;
+        }
     }
-
-    if (l > 5500) {
-        let cutoff = Math.ceil(fields.length / 3);
-        let fields2 = fields.splice(0, cutoff - (cutoff % 3));
-
-        fields2.push({name:"Continued in next message ",value:"\u200b ",inline:false});
-        fields.push({name:'See the full log:',value:link, inline:false});
-
-        embed.fields = fields2;
-        cb.edit({embed:embed});
-        cb.channel.send({embed:{title:'\u200b',fields: fields}});
-    } else {
-        embed.fields = fields;
-        cb.edit({embed: embed});
-    }
-
 }
 
 WarcraftLogs.prototype.Message = function(message)
@@ -296,7 +302,6 @@ WarcraftLogs.prototype.Message = function(message)
             .then((sent) => {
                 getLatestLog(guildId, (data, url) => {
                     let code = stripCode(url);
-                    console.log(code);
                     drawOutput(data, code, sent);
                 });
             });
@@ -309,11 +314,10 @@ WarcraftLogs.prototype.Message = function(message)
                 getSpecificLog(code, (log, url) => {
                     let start = 0;
                     for (var i = log.fights.length - 1; i >= 0; i--) {
-                        if (log.fights[i].boss) {
+                        if (log.fights[i].boss > 0 || log.fights[i].hasOwnProperty('originalBoss')) {
                             start = log.fights[i].start_time;
                         }
                     }
-                    if (log.zone == 1002) start = 0;
                     getWorldbuffs(code, Math.max(start,0), (data, url) => {
                         drawWorldbuffs(data, log, url, sent);
                     });
