@@ -196,9 +196,7 @@ const drawWorldbuffs = (events, log, url, cb) => {
 
     const emojis = cb.client.emojis;
 
-    var l = 0;
-
-    var fields = [];
+    let fields = [];
 
     for (var i = friendlies.length - 1; i >= 0; i--) {
         let player = friendlies[i];
@@ -220,7 +218,7 @@ const drawWorldbuffs = (events, log, url, cb) => {
                 emoji = '❔';
             }
             field.value.push(emoji);
-            if (j % 4 == 0 && j > 0) {
+            if ((j+1) % 4 == 0) {
                 field.value.push("\n");
             }
         }
@@ -231,28 +229,31 @@ const drawWorldbuffs = (events, log, url, cb) => {
 
     fields.sort((a,b) => {
         return b.value.length - a.value.length;
-    })
+    });
 
-    let page = 1;
-    let slice = 0;
+    var page = 1;
+    var i = -1;
+    var l = 0;
 
-    for (var i = 0; i < fields.length; i++) {
+    do {
+        i++;
         fields[i].value = fields[i].value.join('').trim()+'\u200b';
-        l+=fields[i].value.length+fields[i].name.length;
-        if ((l > 5000 && i % 3 == 0) || i == fields.length - 1) {
-            embed = JSON.parse(JSON.stringify(header));
+        l += fields[i].value.length + fields[i].name.length;
+        if ((l > 5000 && (i+1) % 3 == 0) || i >= fields.length-1) {
+            let embed = JSON.parse(JSON.stringify(header));
             embed.title = `${embed.title} #${page}:`;
-            embed.fields = fields.slice(0 + slice, i);
-            slice = i;
+            embed.fields = fields.splice(0, i+1);
+            i = -1;
             l = 0;
             if (page == 1) {
                 cb.edit({embed:embed});
             } else {
-                cb.channel.send({embed:embed})
+                cb.channel.send({embed:embed});
             }
-            page++;
+            page ++;
         }
-    }
+    } while (fields.length > 0);
+    console.log('done looping');
 }
 
 WarcraftLogs.prototype.Message = function(message)
