@@ -290,7 +290,7 @@ WarcraftLogs.prototype.Message = function(message)
             message.channel.send(`Okay. Your guildID is \`${guildId}\`..`);
             let sent = message.channel.send(`Finding your latest uploaded log...`);
             try {
-                getLatestLog(guildId (data, url) => {
+                getLatestLog(guildId, (data, url) => {
                     let code = stripCode(url);
                     drawOutput(data, code, sent);
                 });
