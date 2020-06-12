@@ -269,9 +269,6 @@ WarcraftLogs.prototype.Message = function(message)
     }
 
     if (!id) return false;
-    var guildId = db.getData('/warcraftlogs/guilds/' + id);
-    var zone = guildId.split('|')[1];
-    var guild = guildId.split('|')[0];
 
     var msgArr = message.content.split(" ");
 
@@ -299,6 +296,9 @@ WarcraftLogs.prototype.Message = function(message)
             break;
         case 'latest':
         case undefined:
+            var guildId = db.getData('/warcraftlogs/guilds/' + id);
+            var zone = guildId.split('|')[1];
+            var guild = guildId.split('|')[0];
             message.channel.send('Getting latest log...')
             .then((sent) => {
                 getLatestLog(guildId, (data, url) => {
