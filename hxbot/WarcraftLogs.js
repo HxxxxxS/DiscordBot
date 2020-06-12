@@ -288,13 +288,15 @@ WarcraftLogs.prototype.Message = function(message)
             }
             guildId = guildName + '/' + zone;
             message.channel.send(`Okay. Your guildID is \`${guildId}\`..`);
-            let sent = message.channel.send(`Finding your latest uploaded log...`);
             try {
-                getLatestLog(guildId, (data, url) => {
-                    let code = stripCode(url);
-                    drawOutput(data, code, sent);
-                });
-                db.push('/warcraftlogs/guilds/' + id, guildId);
+                message.channel.send(`Finding your latest uploaded log...`)
+                .then((sent) => {
+                    getLatestLog(guildId, (data, url) => {
+                        let code = stripCode(url);
+                        drawOutput(data, code, sent);
+                        db.push('/warcraftlogs/guilds/' + id, guildId);
+                    });
+                })
             } catch (error) {
                 message.reply(`Something went wrong. Expected syntax: logs [set] [classic|retail region realm Guild Name]`)
             }
