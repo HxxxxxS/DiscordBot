@@ -16,7 +16,7 @@ RollModule.prototype.Message = function(message)
         var engine = Random.engines.mt19937().autoSeed();
         try {
             var n = Random.die(sideCount)(engine);
-            message.reply(`you rolled a ${n}.`);
+            message.reply(`you rolled a ${n} (1-${sideCount})`);
         } catch(error) {
             message.reply('error: Something went wrong. You probably picked a too high number.');
         };
