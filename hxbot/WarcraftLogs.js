@@ -1,7 +1,8 @@
 var request = require('request'),
     cachedRequest = require('cached-request')(request),
     JsonDB = require('node-json-db'),
-    config = require('../config.json');
+    config = require('../config.json'),
+    URL = require('url').URL;
 
 cachedRequest.setCacheDirectory('/tmp/cache');
 
@@ -218,8 +219,8 @@ const drawWorldbuffs = (events, log, url, cb) => {
                 emoji = '❔';
             }
             field.value.push(emoji);
-            if ((j+1) % 4 == 0) {
-                field.value.push("\n");
+            if ((j+1) % 5 == 0) {
+                //field.value.push("\n");
             }
         }
         if(field.name && field.value.length){
@@ -235,16 +236,24 @@ const drawWorldbuffs = (events, log, url, cb) => {
     var i = -1;
     var l = 0;
 
+    if (!fields.length) {
+        cb.edit({embed:header});
+    }
+
     do {
         i++;
+        if(!fields[i]) break;
         fields[i].value = fields[i].value.join('').trim()+'\u200b';
         l += fields[i].value.length + fields[i].name.length;
-        if ((l > 5000 && (i+1) % 3 == 0) || i >= fields.length-1) {
+        if ((l > 3500 && (i+1) % 3 == 0) || i >= fields.length-1) {
             let embed = JSON.parse(JSON.stringify(header));
             embed.title = `${embed.title} #${page}:`;
             embed.fields = fields.splice(0, i+1);
             i = -1;
             l = 0;
+            while (i >= fields.length-1 && embed.fields.length % 3 > 0) {
+                embed.fields.push({name:"\u200b", value:"\u200b", inline: true});
+            }
             if (page == 1) {
                 cb.edit({embed:embed});
             } else {
@@ -316,14 +325,40 @@ WarcraftLogs.prototype.Message = function(message)
             message.delete();
             break;
         case 'worldbuffs':
-            let code = stripCode(msgArr[2]);
+        case 'wb':
+        case 'buffs':
+            var code = stripCode(msgArr[2]);
             message.channel.send(`Getting worldbuffs for ${code}...`)
             .then((sent) => {
                 getSpecificLog(code, (log, url) => {
                     let start = 0;
-                    for (var i = log.fights.length - 1; i >= 0; i--) {
-                        if (log.fights[i].boss > 0 || log.fights[i].hasOwnProperty('originalBoss')) {
+                    if (msgArr[2].indexOf('#')>-1 && msgArr[2].indexOf("http")>-1)
+                    {
+                        var u = new URL(msgArr[2].replace('#','?'));
+                        if (u.searchParams.get('fight'))
+                        {
+                            var i = Math.max(u.searchParams.get('fight')-1,0);
+                            if (log.fights[i].hasOwnProperty('originalBoss'))
+                            {
+                                if (log.fights[i+1].id == log.fights[i].originalBoss) {
+                                    i = i+1;
+                                }
+                            }
                             start = log.fights[i].start_time;
+                            log.title = `${log.title} - ${log.fights[i].name}`;
+                        }
+                    }
+                    if (msgArr[3])
+                    {
+                        var i = msgArr[3];
+                        start = log.fights[i].start_time;
+                    }
+                    if (!start)
+                    {
+                        for (var i = log.fights.length - 1; i >= 0; i--) {
+                            if (log.fights[i].boss > 0 || log.fights[i].hasOwnProperty('originalBoss')) {
+                                start = log.fights[i].start_time;
+                            }
                         }
                     }
                     getWorldbuffs(code, Math.max(start,0), (data, url) => {
