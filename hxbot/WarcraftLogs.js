@@ -144,7 +144,7 @@ const drawOutput = (data, code, cb) => {
                 field.value += (spec_fight.kill ? "✅" : "❌") + " - ";
                 field.value += "["+timeEnd;
                 field.value += "]("+link+"#fight="+spec_fight.id+" '";
-                field.value += enemy.name+" "+(spec_fight.kill?'kill':'wipe')+" from "+timeStart+" to "+timeEnd+" | Length: "+convertMilliseconds(spec_fight.end_time-spec_fight.start_time)+"') "+"\n";
+                field.value += enemy.name+" "+(spec_fight.kill?'kill':'wipe')+" from "+timeStart+" to "+timeEnd+" | Length: "+convertMilliseconds(spec_fight.end_time-spec_fight.start_time)+`') ${(spec_fight.kill?'':spec_fight.bossPercentage/100+'%')}\n`;
                 if (spec_fight.kill) break;
             }
 
