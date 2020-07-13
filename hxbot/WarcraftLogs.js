@@ -64,7 +64,6 @@ const doRequest = (url, cb) => {
             cb(data, url);
         }else{
             console.log((error?error:response));
-            message.channel.send(`Error: ${response.statusCode}`);
         }
     });
 }
