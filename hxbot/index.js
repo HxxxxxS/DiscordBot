@@ -2,6 +2,7 @@ var JsonDB          = require('node-json-db');
 
 var DbHelper        = require('./DbHelper.js'),
     Help            = require('./Help.js'),
+    Clear            = require('./Clear.js'),
     Urban           = require('./Urban.js'),
     Lastfm          = require('./Lastfm.js'),
     NowPlaying      = require('./NowPlaying.js'),
@@ -18,6 +19,7 @@ var HxBot = function() {
     this.config     = require('../config.json');
     this.DbHelper   = new DbHelper;
     this.Help       = new Help;
+    this.Clear      = new Clear;
     this.Urban      = new Urban;
     this.Lastfm     = new Lastfm;
     this.NowPlaying = new NowPlaying;

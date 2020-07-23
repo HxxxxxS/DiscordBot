@@ -75,16 +75,16 @@
             "callback": "CustomCmd"
         },
         {
-            "cmd": "log",
-            "desc": "Links the most recent log posted to WarcraftLogs. Use !logs set to set Guild Name.",
+            "cmd":      "log",
+            "desc":     "Links the most recent log posted to WarcraftLogs. Use !logs set to set Guild Name.",
             "callback": "WarcraftLogs",
-            "syntax": "logs [set] [classic|retail region realm Guild Name]"
+            "syntax":   "logs [set] [classic|retail region realm Guild Name]"
         },
         {
-            "cmd": "songflower",
-            "desc": "Calculates upcoming songflower spawns.",
+            "cmd":      "songflower",
+            "desc":     "Calculates upcoming songflower spawns.",
             "callback": "SongFlower",
-            "syntax": "songflower [now|11:53]"
+            "syntax":   "songflower [now|11:53]"
         }
     ]
 }
