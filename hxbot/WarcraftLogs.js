@@ -72,6 +72,7 @@ const stripCode = (code) => {
     if(code.indexOf("http") > -1){
         if(code.indexOf("#") > -1) code = code.split("#")[0]; // Remove everything after #
         if(code.indexOf("?") > -1) code = code.split("?")[0]; // Remove everything after ?
+        code = code.replace(/\/$/, '')
         code = code.split("/")[code.split("/").length - 1];   // Remove everything before /
     }
     return code;

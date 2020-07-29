@@ -20,6 +20,12 @@
             "callback": "Help"
         },
         {
+            "cmd":      "clear",
+            "desc":     "Deletes the specified amount of last messages in the current channel. Default and max 100.",
+            "syntax":   "clear 50",
+            "callback": "Clear"
+        },
+        {
             "cmd":      "define",
             "desc":     "Shows the Urban Dictionary definition of a word or phrase.",
             "callback": "Urban"
