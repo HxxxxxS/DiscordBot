@@ -14,7 +14,9 @@ const raids = {
     1000: 'Molten Core',
     1001: 'Onyxia\'s Lair',
     1002: 'Blackwing Lair',
-    1003: 'Zul\'Gurub'
+    1003: 'Zul\'Gurub',
+    1004: 'Ruins of Ahn\'Qiraj',
+    1005: 'Temple of Ahn\'Qiraj'
 }
 
 const convertMilliseconds = (miliseconds) => {
