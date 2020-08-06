@@ -175,6 +175,7 @@ const drawWorldbuffs = (events, log, url, cb) => {
     let header = {
         title: `Worldbuffs for ${log.title} ${new Date(log.start).toDateString()}`,
         url: link,
+        thumbnail: {url:log.img},
         fields: []
     }
 
@@ -356,6 +357,7 @@ WarcraftLogs.prototype.Message = function(message)
             .then((sent) => {
                 getSpecificLog(code, (log, url) => {
                     let start = 0;
+                    log.img = `https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-${log.zone}-small.jpg`;
                     if (msgArr[2].indexOf('#')>-1 && msgArr[2].indexOf("http")>-1)
                     {
                         var u = new URL(msgArr[2].replace('#','?'));
@@ -370,6 +372,7 @@ WarcraftLogs.prototype.Message = function(message)
                             }
                             start = log.fights[i].start_time;
                             log.title = `${log.title} - ${log.fights[i].name}`;
+                            log.img = `https://assets.rpglogs.com/img/warcraft/bosses/${(log.fights[i].boss || log.fights[i].originalBoss)}-icon.jpg`
                         }
                     }
                     if (msgArr[3])
