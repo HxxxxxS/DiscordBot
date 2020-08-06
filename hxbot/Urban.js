@@ -11,12 +11,24 @@ UrbanModule.prototype.Message = function(message)
     if (urbanIndex > -1) {
         Urban(term).first(function(json) {
             if (json !== undefined) {
-                var definition = `\n**${json.word}**\n` +
-                    json.definition + "\n\n" +
-                    'Example:' + json.example;
-                message.reply(definition);
+                let embed = {
+                        title: json.word,
+                        fields: [{
+                            name: `Definition:`,
+                            value: json.definition.replace(/\[([\w\s]*)\]/g,`$1`)
+                                                        //'[$1](https://www.urbandictionary.com/define.php?term=$1)')
+                        },{
+                            name: 'Example:',
+                            value: json.example.replace(/\[([\w\s]*)\]/g, `$1`)
+                                                        //`[$1](https://www.urbandictionary.com/define.php?term=$1 '${json.word}')`)
+                        },{
+                            name: '\u200b',
+                            value:`[More definitions](https://www.urbandictionary.com/define.php?term=${term})`
+                        }]
+                }
+                message.channel.send({embed:embed});
             }else{
-                message.reply(`Sorry, I couldn't find a definition for: ${term}`);
+                message.channel.send(`Sorry, I couldn't find a definition for: ${term}`);
             }
         });
     }
