@@ -200,6 +200,7 @@ const drawWorldbuffs = (events, log, url, cb) => {
     const emojis = cb.client.emojis;
 
     let fields = [];
+    let buff_errors = {count:0}
 
     for (var i = friendlies.length - 1; i >= 0; i--) {
         let player = friendlies[i];
@@ -213,12 +214,22 @@ const drawWorldbuffs = (events, log, url, cb) => {
         for (var j = 0; j < player.buffs.length; j++) {
             let buff = player.buffs[j];
             if (!buff) continue;
-            let buffName = buff.name.toLowerCase().replace(/\s/g, 'O').replace(/\W/g, '').replace(/O/g,'_');
-            if (buff.icon.split('.')[0] == 'inv_misc_orb_02') buffName = 'sayges_dark_fortune';
-            let emoji = emojis.find(emoji => emoji.name === buffName);
+            if (buff.name)
+                buff.name = buff.name.toLowerCase().replace(/\s/g, 'O').replace(/\W/g, '').replace(/O/g,'_');
+            else
+                buff.name = buff.icon.toLowerCase().replace(/\.(jpg|png)/,'')
+            if (buff.icon.split('.')[0] == 'inv_misc_orb_02') buff.name = 'sayges_dark_fortune';
+            let emoji = emojis.find(emoji => emoji.name === buff.name);
             if(!emoji) {
-                console.log(`Missing emoji for ${buffName}`);
+                console.log(`Missing emoji for ${buff.name}`);
                 emoji = '❔';
+                if(buff_errors[buff.id])
+                    buff_errors[buff.id].count++;
+                else{
+                    buff_errors[buff.id] = buff;
+                    buff_errors[buff.id].count = 1;
+                }
+                buff_errors.count++;
             }
             field.value.push(emoji);
             if ((j+1) % 5 == 0) {
@@ -264,6 +275,17 @@ const drawWorldbuffs = (events, log, url, cb) => {
             page ++;
         }
     } while (fields.length > 0);
+    if (buff_errors.count) {
+        let error_field = "\u200b";
+        for (key in buff_errors) {
+            console.log(key)
+            if (key == 'count') continue;
+            let buff = buff_errors[key];
+            error_field += "https://classicdb.ch/?spell="+buff.id+" x"+buff.count+"\n";
+        }
+        let error = {fields:[{name:`${buff_errors.count} unknown buffs found:`,value:error_field}]}
+        cb.channel.send({embed:error})
+    }
     console.log('done looping');
 }
 
