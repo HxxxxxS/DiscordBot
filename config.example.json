@@ -64,6 +64,11 @@
             "callback": "OnyxiaReset"
         },
         {
+            "cmd":      "aq",
+            "desc":     "Display the next AQ20 reset (WoW Classic).",
+            "callback": "Aq20Reset"
+        },
+        {
             "cmd":      "zg",
             "desc":     "Display the next Zul'Gurub reset (WoW Classic).",
             "callback": "ZGReset"
