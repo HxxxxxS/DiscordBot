@@ -15,7 +15,7 @@ Aq20Module.prototype.Message = function(message)
 {
     var reset = new Date('2020-08-08T08:00:00.000Z');
 
-    const rcd = 5;
+    const rcd = 3;
 
     const convertMilliseconds = (miliseconds, format) =>
     {
