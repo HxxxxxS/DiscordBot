@@ -43,7 +43,7 @@
         },
         {
             "cmd":      "poll",
-            "desc":     "Create a poll with emoji reactions as poll options.",
+            "desc":     "Create a poll with emoji reactions as poll options. Only works with native Discord emoji, not custom ones.",
             "callback": "Poll",
             "syntax":   "poll Is this a cool feature? :thumbsup: :thumbsdown: "
         },
