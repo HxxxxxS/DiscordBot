@@ -41,65 +41,89 @@ const convertMilliseconds = (miliseconds) => {
     return ret;
 };
 
-const doRequest = (url, cb) => {
-    let headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'https://github.com/HxxxxxS/DiscordBot'
-    }
-
-    let options = {
-        url: url,
-        port: 443,
-        method: 'GET',
-        ttl: 5 * 60 * 1000,
-        headers: headers,
-        timeout: 15000
-    }
-
-    console.log('requesting '+url);
-
-    cachedRequest(options, (error, response, body) => {
-        console.log(`request returned status ${response.statusCode}`);
-        if (!error && response.statusCode == 200) {
-            let data = JSON.parse(body);
-            cb(data, url);
-        }else{
-            console.log((error?error:response));
+const doRequest = (url) => {
+    return new Promise((onSuccess, onError) => {
+        let headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'https://github.com/HxxxxxS/DiscordBot'
         }
-    });
+
+        let options = {
+            url: url,
+            port: 443,
+            method: 'GET',
+            ttl: 5 * 60 * 1000,
+            headers: headers,
+            timeout: 15000
+        }
+
+        console.log('requesting '+url);
+
+        cachedRequest(options, (error, response, body) => {
+            console.log(`request returned status ${response.statusCode}`);
+            if (!error && response.statusCode == 200) {
+                let data = JSON.parse(body);
+                data.requestOrigin = url;
+                onSuccess(data);
+            }else{
+                onError((error?error:response));
+            }
+        });
+
+    })
 }
 
 const stripCode = (code) => {
-    if(code.indexOf("http") > -1){
-        if(code.indexOf("#") > -1) code = code.split("#")[0]; // Remove everything after #
-        if(code.indexOf("?") > -1) code = code.split("?")[0]; // Remove everything after ?
-        code = code.replace(/\/$/, '')
-        code = code.split("/")[code.split("/").length - 1];   // Remove everything before /
-    }
+    console.log('stripping', code);
+    if (!code) return false;
+    if(code.indexOf("#") > -1) code = code.split("#")[0]; // Remove everything after #
+    if(code.indexOf("?") > -1) code = code.split("?")[0]; // Remove everything after ?
+    code = code.replace(/\/$/, '')
+    code = code.split("/")[code.split("/").length - 1];   // Remove everything before /
+    console.log('stripped to', code);
     return code;
 }
 
-const getSpecificLog = (code, cb) => {
-    console.log('getSpecificLog called!');
-    let url = `https://classic.warcraftlogs.com/v1/report/fights/${stripCode(code)}?api_key=${config.warcraft_logs.apikey}`;
-    doRequest(url, (data, url) => {
-        cb(data, url);
+const getSpecificLog = (code) => {
+    return new Promise((onSuccess, onError) => {
+        console.log('getSpecificLog called!');
+        let url = `https://classic.warcraftlogs.com/v1/report/fights/${stripCode(code)}?api_key=${config.warcraft_logs.apikey}`;
+        doRequest(url)
+        .then((data) => {
+            onSuccess(data);
+        })
+        .catch((error) => {
+            onError(error);
+        });
+    })
+}
+
+const getLatestLog = (guildId) => {
+    return new Promise((onSuccess, onError) => {
+        console.log('getLatestLog called!');
+        let zone = guildId.split('|')[1];
+        let guild = guildId.split('|')[0];
+        let url = `https://classic.warcraftlogs.com/v1/reports/guild/${guild}?api_key=${config.warcraft_logs.apikey}`
+        doRequest(url)
+        .then((data) => {
+            getSpecificLog(data[0].id)
+            .then((data) => {
+                onSuccess(data);
+            })
+            .catch((error) => {
+                onError(error);
+            })
+        })
+        .catch((error) => {
+            onError(error);
+        });
     });
 }
 
-const getLatestLog = (guildId, cb) => {
-    console.log('getLatestLog called!');
-    let zone = guildId.split('|')[1];
-    let guild = guildId.split('|')[0];
-    let url = `https://classic.warcraftlogs.com/v1/reports/guild/${guild}?api_key=${config.warcraft_logs.apikey}`
-    doRequest(url, (data, url) => {
-        getSpecificLog(data[0].id, cb);
-    });
-}
-
-const drawOutput = (data, code, cb) => {
+const drawOutput = (data, cb) => {
     console.log('drawOutput called!');
+    let code = stripCode(data.requestOrigin);
     let link = `https://classic.warcraftlogs.com/reports/${code}`;
     let embed = {
         title: data.title,
@@ -159,18 +183,25 @@ const drawOutput = (data, code, cb) => {
     cb.edit({embed: embed});
 }
 
-const getWorldbuffs = (code, start, cb) => {
+const getWorldbuffs = (code, start) => {
     console.log('getWorldbuffs called!');
-    let url = `https://classic.warcraftlogs.com/v1/report/events/${code}?type=combatantinfo&start=${start}&end=${start}&api_key=${config.warcraft_logs.apikey}`;
-    doRequest(url, (data, url) => {
-        cb(data.events, url);
+    return new Promise((onSuccess, onError) => {
+        let url = `https://classic.warcraftlogs.com/v1/report/events/${code}?type=combatantinfo&start=${start}&end=${start}&api_key=${config.warcraft_logs.apikey}`;
+        doRequest(url)
+        .then((data) => {
+            onSuccess(data)
+        })
+        .catch((error) => {
+            onError(error);
+        });
     });
 }
 
-const drawWorldbuffs = (events, log, url, cb) => {
+const drawWorldbuffs = (data, log, cb) => {
     console.log('drawWorldbuffs called!');
+    let events = data.events;
     console.log(`Checking ${log.friendlies.length} friendlies and ${events.length} events`);
-    let code = stripCode(url);
+    let code = stripCode(data.requestOrigin);
     let link = `https://classic.warcraftlogs.com/reports/${code}`;
     let header = {
         title: `Worldbuffs for ${log.title} ${new Date(log.start).toDateString()}`,
@@ -290,6 +321,15 @@ const drawWorldbuffs = (events, log, url, cb) => {
     console.log('done looping');
 }
 
+const errorHandler = (error, message) => {
+    if (error.body) {
+        let body = JSON.parse(error.body);
+        message.edit(`**Error ${body.status}: ${body.error}**`);
+    } else {
+        console.log('error:', error, ':error');
+    }
+}
+
 WarcraftLogs.prototype.Message = function(message)
 {
     switch (message.channel.type) {
@@ -342,9 +382,12 @@ WarcraftLogs.prototype.Message = function(message)
             var guild = guildId.split('|')[0];
             message.channel.send('Getting latest log...')
             .then((sent) => {
-                getLatestLog(guildId, (data, url) => {
-                    let code = stripCode(url);
-                    drawOutput(data, code, sent);
+                getLatestLog(guildId)
+                .then((data) => {
+                    drawOutput(data, sent);
+                })
+                .catch((error) => {
+                    errorHandler(error, sent);
                 });
             });
             message.delete();
@@ -355,7 +398,9 @@ WarcraftLogs.prototype.Message = function(message)
             var code = stripCode(msgArr[2]);
             message.channel.send(`Getting worldbuffs for ${code}...`)
             .then((sent) => {
-                getSpecificLog(code, (log, url) => {
+                getSpecificLog(code)
+                .then((log) => {
+                    let url = log.requestOrigin;
                     let start = 0;
                     log.img = `https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-${log.zone}-small.jpg`;
                     if (msgArr[2].indexOf('#')>-1 && msgArr[2].indexOf("http")>-1)
@@ -388,9 +433,16 @@ WarcraftLogs.prototype.Message = function(message)
                             }
                         }
                     }
-                    getWorldbuffs(code, Math.max(start,0), (data, url) => {
-                        drawWorldbuffs(data, log, url, sent);
+                    getWorldbuffs(code, Math.max(start,0))
+                    .then((data) => {
+                        drawWorldbuffs(data, log, sent);
+                    })
+                    .catch((error) => {
+                        errorHandler(error, sent);
                     });
+                })
+                .catch((error) => {
+                    errorHandler(error, sent);
                 });
             });
             break;
@@ -403,9 +455,13 @@ WarcraftLogs.prototype.Message = function(message)
             var link = msgArr[3];
             message.channel.fetchMessage(msgID)
             .then((sent)=>{
-                getSpecificLog(link, (data, url) => {
-                    let code = stripCode(url);
-                    drawOutput(data, code, sent);
+                getSpecificLog(link)
+                .then((data) => {
+                    let code = stripCode(data.requestOrigin);
+                    drawOutput(data, sent);
+                })
+                .catch((error) => {
+                    errorHandler(error, sent);
                 })
             })
             message.delete();
@@ -413,9 +469,12 @@ WarcraftLogs.prototype.Message = function(message)
         default:
             message.channel.send('Getting specified log...')
             .then((sent) => {
-                getSpecificLog(msgArr[1], (data, url) => {
-                    let code = stripCode(url);
-                    drawOutput(data, code, sent);
+                getSpecificLog(msgArr[1])
+                .then((data) => {
+                    drawOutput(data, sent);
+                })
+                .catch((error) => {
+                    errorHandler(error, sent);
                 });
             });
             message.delete();
