@@ -121,6 +121,17 @@ const getLatestLog = (guildId) => {
     });
 }
 
+const drawFight = (fight, link) => {
+    let timeStart = convertMilliseconds(fight.start_time);
+    let timeEnd = convertMilliseconds(fight.end_time);
+    let length = convertMilliseconds(fight.end_time - fight.start_time);
+    let fightLink = link + '#fight=' + fight.id;
+    let ret = (fight.kill ? "✅" : "❌") + ' - ';
+    ret += `[${timeEnd}](${fightLink} '${fight.name} ${(fight.kill ? 'kill' : 'wipe')} from ${timeStart} to ${timeEnd}`
+    ret += ` | Fight length: ${length}') ${(fight.kill||fight.boss==610?'':fight.fightPercentage/100+'%')}\n`
+    return ret;
+}
+
 const drawOutput = (data, cb) => {
     console.log('drawOutput called!');
     let code = stripCode(data.requestOrigin);
@@ -136,51 +147,40 @@ const drawOutput = (data, cb) => {
                 'Date: **' + new Date(data.start).toDateString() + "**\n" +
                 'Duration: **' + convertMilliseconds(data.end - data.start) + "**\n"
     },{name:'\u200b',value:'Bosses:'}];
-    var bosses = [];
-    var timer = 0;
-    for (var i = 0; i<data.fights.length; i++)
+    let bosses = [];
+    let timer = 0;
+    for (let i = 0; i<data.fights.length; i++)
     {
-        var fight = data.fights[i];
-        if (fight.end_time < timer) break;
-        if (fight.boss)
-        {
-            if (bosses.indexOf(fight.boss)>-1) continue;
-            bosses.push(fight.boss);
-            var enemy;
-            for (var j = 0; j<data.enemies.length; j++)
-            {
-                enemy = data.enemies[j];
-                if (fight.name == enemy.name) break;
-                if (data.enemies[j].type != "Boss") enemy = undefined;
-            }
-            if (!enemy) continue;
-            var name = (enemy.name.length > 21 ? enemy.name.split(' ')[0] : enemy.name);
-            field = {name: name, value: '', inline: true}
-            for (var j = 0; j<enemy.fights.length; j++)
-            {
-                var spec_fight = data.fights[enemy.fights[j].id-1];
-                if (!spec_fight.boss) continue;
-                if (field.value.length > 666)
-                {
-                    fields.push(field);
-                    field = {name: name, value: '', inline: true}
+        let encounter = data.fights[i];
+        if (encounter.boss) {
+            if (bosses.indexOf(encounter.boss) > -1) continue;
+            let name = (encounter.name.length > 21 ? encounter.name.split(' ')[0] : encounter.name);
+            let fieldFrame = {name: name, inline: true, value: '\u200b'}
+            let field = JSON.parse(JSON.stringify(fieldFrame));
+            field.value += drawFight(encounter, link);
+            timer = encounter.end_time;
+            bosses.push(encounter.boss);
+            if (!encounter.kill) {
+                for (let j = i; j < data.fights.length; j++) {
+                    if (data.fights[j].end_time <= timer) continue;
+                    timer = data.fights[j].end_time;
+                    let fight = drawFight(data.fights[j]);
+                    if (field.name.length + field.value.length + fight.length >= 1024) {
+                        embed.fields.push(field);
+                        field = JSON.parse(JSON.stringify(fieldFrame));
+                    }
+                    if (data.fights[j].boss == encounter.boss) {
+                        field.value += drawFight(data.fights[j], link);
+                    }
+                    if (data.fights[j].kill) break;
                 }
-                var timeStart = convertMilliseconds(spec_fight.start_time),
-                    timeEnd = convertMilliseconds(spec_fight.end_time);
-                field.value += (spec_fight.kill ? "✅" : "❌") + " - ";
-                field.value += "["+timeEnd;
-                field.value += "]("+link+"#fight="+spec_fight.id+" '";
-                field.value += enemy.name+" "+(spec_fight.kill?'kill':'wipe')+" from "+timeStart+" to "+timeEnd+" | Length: "+convertMilliseconds(spec_fight.end_time-spec_fight.start_time)+`') ${(spec_fight.kill?'':spec_fight.bossPercentage/100+'%')}\n`;
-                if (spec_fight.kill) break;
             }
-
-            embed.fields.push(field);
+            embed.fields.push(field)
         }
-        if (fight.end_time > timer) timer = fight.end_time;
     }
     if (bosses.length % 3 != 0) embed.fields.push({name:"\u200b ",value:"\u200b ",inline:true});
     embed.fields.push({name:'See the full log:',value:link});
-    cb.edit({embed: embed});
+    cb.edit({embed: embed, split: true});
 }
 
 const getWorldbuffs = (code, start) => {
