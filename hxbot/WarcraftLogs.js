@@ -75,13 +75,11 @@ const doRequest = (url) => {
 }
 
 const stripCode = (code) => {
-    console.log('stripping', code);
     if (!code) return false;
     if(code.indexOf("#") > -1) code = code.split("#")[0]; // Remove everything after #
     if(code.indexOf("?") > -1) code = code.split("?")[0]; // Remove everything after ?
     code = code.replace(/\/$/, '')
     code = code.split("/")[code.split("/").length - 1];   // Remove everything before /
-    console.log('stripped to', code);
     return code;
 }
 
@@ -253,7 +251,7 @@ const drawWorldbuffs = (data, log, cb) => {
             if (buff.icon.split('.')[0] == 'inv_misc_orb_02') buff.name = 'sayges_dark_fortune';
             let emoji = emojis.find(emoji => emoji.name === buff.name);
             if(!emoji) {
-                console.log(`Missing emoji for ${buff.name}`);
+                console.log(`Missing emoji for ${buff.name} ${buff.id}`);
                 emoji = '❔';
                 if(buff_errors[buff.id])
                     buff_errors[buff.id].count++;
@@ -310,12 +308,12 @@ const drawWorldbuffs = (data, log, cb) => {
     if (buff_errors.count) {
         let error_field = "\u200b";
         for (key in buff_errors) {
-            console.log(key)
             if (key == 'count') continue;
             let buff = buff_errors[key];
             error_field += "https://classicdb.ch/?spell="+buff.id+" x"+buff.count+"\n";
         }
         let error = {fields:[{name:`${buff_errors.count} unknown buffs found:`,value:error_field}]}
+        error.fields.push({name: "\u200b", value: 'This shouldnt happen. Ping <@167357644825296896>'})
         cb.channel.send({embed:error})
     }
     console.log('done looping');
@@ -365,9 +363,10 @@ WarcraftLogs.prototype.Message = function(message)
             try {
                 message.channel.send(`Finding your latest uploaded log...`)
                 .then((sent) => {
-                    getLatestLog(guildId, (data, url) => {
-                        let code = stripCode(url);
-                        drawOutput(data, code, sent);
+                    getLatestLog(guildId)
+                    .then((data) => {
+                        let code = stripCode(data.requestOrigin);
+                        drawOutput(data, sent);
                         db.push('/warcraftlogs/guilds/' + id, guildId);
                     });
                 })
@@ -400,6 +399,7 @@ WarcraftLogs.prototype.Message = function(message)
             .then((sent) => {
                 getSpecificLog(code)
                 .then((log) => {
+                    sent.edit(`Getting worldbuffs for ${log.title} ${new Date(log.start).toDateString()}`);
                     let url = log.requestOrigin;
                     let start = 0;
                     log.img = `https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-${log.zone}-small.jpg`;
