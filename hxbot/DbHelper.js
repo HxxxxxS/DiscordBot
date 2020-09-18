@@ -13,6 +13,7 @@ DbHelper.prototype.Init = function()
     this.Populate('used_jokes',0);
     this.Populate('cmds',1);
     this.Populate('warcraftlogs/guilds',1);
+    this.Populate('GuildVotes',1);
     db.reload();
 }
 

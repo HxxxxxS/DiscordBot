@@ -14,7 +14,8 @@ var DbHelper        = require('./DbHelper.js'),
     Aq20Reset       = require('./ResetAq20.js'),
     CustomCmd       = require('./CustomCmd.js'),
     WarcraftLogs    = require('./WarcraftLogs.js'),
-    SongFlower      = require('./SongFlower.js');
+    SongFlower      = require('./SongFlower.js'),
+    GuildVote     = require('./GuildVote.js');
 
 var HxBot = function() {
     this.config     = require('../config.json');
@@ -33,6 +34,7 @@ var HxBot = function() {
     this.CustomCmd  = new CustomCmd;
     this.WarcraftLogs = new WarcraftLogs;
     this.SongFlower = new SongFlower;
+    this.GuildVote = new GuildVote;
 }
 
 HxBot.prototype.guildMemberAdd = function (member) {

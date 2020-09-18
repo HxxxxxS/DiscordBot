@@ -96,6 +96,11 @@
             "desc":     "Calculates upcoming songflower spawns.",
             "callback": "SongFlower",
             "syntax":   "songflower [now|11:53]"
+        },
+        {
+            "cmd": "guildvote",
+            "desc": "Creates a new guild vote",
+            "callback": "GuildVote"
         }
     ]
 }
