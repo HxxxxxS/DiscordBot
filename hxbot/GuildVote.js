@@ -52,7 +52,16 @@ GuildVote.prototype.Message = function(message)
         try {
             var vote = db.getData('/GuildVotes/'+message.channel.id);
             console.log(vote);
+            var usedEmoji = [];
+            for (var i = vote.suggestions.length - 1; i >= 0; i--) {
+                usedEmoji.push(vote.suggestions[i].emoji);
+            }
+
             let emoji = emojis.random();
+            do {
+                emoji = emojis.random();
+            } while (usedEmoji.indexOf(emoji) > -1)
+
             vote.suggestions.push({emoji:emoji, suggestion: parameters.join(" ")});
             db.push('/GuildVotes/'+message.channel.id, vote);
             message.channel.messages.fetch(vote.message)
